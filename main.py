@@ -14,18 +14,13 @@ def main():
     print("=" * 60)
     
     data_loader = DataLoader()
-    data_loader.load_mnist(test_size=0.2, val_size=0.1)
+    data_loader.load_mnist()
     
     # 2. Display sample images
-    visualizer = Visualizer()
-    visualizer.show_sample_images(data_loader.X_train, data_loader.y_train)
+    Visualizer.show_sample_images(data_loader.X_train, data_loader.y_train)
     
     # 3. Initialize neural network
-    model = NeuralNetwork(
-        input_size=Config.INPUT_SIZE,
-        hidden_size=Config.HIDDEN_SIZE,
-        output_size=Config.OUTPUT_SIZE
-    )
+    model = NeuralNetwork.from_config(Config)
     
     # Print network architecture
     print(f"Network Architecture:")
@@ -44,7 +39,7 @@ def main():
     )
     
     # 5. Plot training history
-    visualizer.plot_training_history(history)
+    Visualizer.plot_training_history(history)
     
     # 6. Evaluate on test set
     print("\nEvaluating on Test Set:")
@@ -53,11 +48,11 @@ def main():
     print(f"Test Accuracy: {test_accuracy:.2f}%")
     
     # 7. Visualize learned weights
-    visualizer.plot_weights(model.W1, "Hidden Layer Weights")
+    Visualizer.plot_weights(model.W1, "Hidden Layer Weights")
     
     # 8. Show some predictions
     n_samples = 10
-    indices = np.random.choice(len(data_loader.X_test), n_samples, replace=False)
+    indices = Config.rng.choice(len(data_loader.X_test), n_samples, replace=False)
     
     print("\nSample Predictions:")
     print("-" * 40)
