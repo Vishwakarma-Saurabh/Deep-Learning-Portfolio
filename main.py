@@ -20,8 +20,11 @@ def main():
     Visualizer.show_sample_images(data_loader.X_train, data_loader.y_train)
     
     # 3. Initialize neural network
-    model = NeuralNetwork.from_config(Config)
-    
+    model = NeuralNetwork(
+            input_size=Config.INPUT_SIZE,
+            hidden_size=Config.HIDDEN_SIZE,
+            output_size=Config.OUTPUT_SIZE
+        )    
     # Print network architecture
     print(f"Network Architecture:")
     print(f"  Input Layer: {Config.INPUT_SIZE} neurons")

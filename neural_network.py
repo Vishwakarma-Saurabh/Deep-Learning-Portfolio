@@ -46,7 +46,7 @@ class NeuralNetwork:
         
         # Dropout (only during training)
         if training:
-            dropout_mask = (self.rng.random(*A1.shape) > dropout_rate) / (1 - dropout_rate)
+            dropout_mask = (self.rng.random(A1.shape) > dropout_rate) / (1 - dropout_rate)
             A1 = A1 * dropout_mask
         else:
             dropout_mask = np.ones_like(A1)
