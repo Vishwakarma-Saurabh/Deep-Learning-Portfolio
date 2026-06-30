@@ -19,14 +19,11 @@ class Dense(Layer):
         self.output_size = output_size
         self.use_bias = use_bias
         
-        # Determine the isolated generator state
         generator = rng if rng is not None else np.random.default_rng(42)
         
-        # He initialization for stable variance with ReLU activations
         self.W = generator.normal(0.0, np.sqrt(2.0 / input_size), size=(input_size, output_size))
         self.b = np.zeros((1, output_size)) if use_bias else None
         
-        # Storage parameters for tracking optimizer momentum states
         self.m_W = np.zeros_like(self.W)
         self.v_W = np.zeros_like(self.W)
         self.m_b = np.zeros_like(self.b) if use_bias else None
@@ -34,6 +31,7 @@ class Dense(Layer):
     
     def forward(self, X, training=True):
         self.cache['X'] = X
+        self.cache['n_samples'] = X.shape[0]  # Store batch size
         Z = np.dot(X, self.W)
         if self.use_bias:
             Z += self.b
@@ -41,9 +39,8 @@ class Dense(Layer):
     
     def backward(self, grad):
         X = self.cache['X']
-        n_samples = X.shape[0]
+        n_samples = X.shape[0]  # Get batch size
         
-        # Gradients averaged cleanly over the total batch size
         dW = np.dot(X.T, grad) / n_samples
         dX = np.dot(grad, self.W.T)
         
@@ -53,7 +50,7 @@ class Dense(Layer):
             db = None
         
         return dX, dW, db
-
+    
 class Activation(Layer):
     """Activation layer handling forward and backward non-linear functions"""
     def __init__(self, activation_type='relu'):
@@ -87,7 +84,7 @@ class Activation(Layer):
             sig = 1.0 / (1.0 + np.exp(-np.clip(X, -500, 500)))
             return grad * sig * (1 - sig)
         elif self.activation_type == 'softmax':
-            return grad  # Combined directly with cross-entropy loss gradients in your network
+            return grad  # Combined cleanly with cross-entropy loss gradients
         else:
             raise ValueError(f"Unknown activation: {self.activation_type}")
 
@@ -99,15 +96,12 @@ class BatchNorm(Layer):
         self.momentum = momentum
         self.eps = eps
         
-        # Learnable scale and shift properties
         self.gamma = np.ones((1, num_features))
         self.beta = np.zeros((1, num_features))
         
-        # Moving averages tracking overall historical statistics
         self.running_mean = np.zeros((1, num_features))
         self.running_var = np.ones((1, num_features))
         
-        # Optimization state parameters
         self.m_gamma = np.zeros_like(self.gamma)
         self.v_gamma = np.zeros_like(self.gamma)
         self.m_beta = np.zeros_like(self.beta)
@@ -129,7 +123,6 @@ class BatchNorm(Layer):
         return self.gamma * X_norm + self.beta
     
     def backward(self, grad):
-        mean = self.cache['mean']
         var = self.cache['var']
         X_norm = self.cache['X_norm']
         n_samples = grad.shape[0]
@@ -139,10 +132,10 @@ class BatchNorm(Layer):
         
         grad_mean = np.mean(grad, axis=0, keepdims=True)
         grad_var = np.mean(grad * X_norm, axis=0, keepdims=True)
-        
         dX = (self.gamma / np.sqrt(var + self.eps)) * (grad - grad_mean - X_norm * grad_var)
+        
         return dX, dgamma, dbeta
-
+    
 class Dropout(Layer):
     """Dropout regularization layer utilizing a dedicated seed engine"""
     def __init__(self, rate=0.5, rng=None):
@@ -153,7 +146,6 @@ class Dropout(Layer):
     
     def forward(self, X, training=True):
         if training and self.rate > 0:
-            # Mask generation isolated from the global state space
             self.mask = (self.rng.random(X.shape) > self.rate) / (1 - self.rate)
             return X * self.mask
         else:

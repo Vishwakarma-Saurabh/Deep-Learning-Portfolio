@@ -139,8 +139,14 @@ class NeuralNetwork:
                 self.params[f'gamma{i}'] = layer.gamma
                 self.params[f'beta{i}'] = layer.beta
         
+        # Map gradient keys (e.g. dW0 -> W0) to match parameter names
+        optimizer_grads = {
+            key[1:]: value for key, value in self.grads.items()
+            if key.startswith('d') and key[1:] in self.params
+        }
+        
         # Apply optimization update step
-        self.params = optimizer.step(self.params, self.grads)
+        self.params = optimizer.step(self.params, optimizer_grads)
         
         # Write back updated values to the individual structural layer classes
         for i, layer in enumerate(self.layers):
