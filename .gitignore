@@ -71,6 +71,7 @@ logs/
 
 # Output directories
 output/
+outputs/
 results/
 checkpoints/
 mnist_data/
