@@ -1,117 +1,117 @@
 import numpy as np
 
+
 class MaxPool2D:
-    """Max Pooling layer from scratch"""
+    """Max Pooling layer from scratch."""
+
     def __init__(self, pool_size=2, stride=2):
         self.pool_size = pool_size
         self.stride = stride
-        self.max_positions = {}
         self.cache = {}
-    
+
     def forward(self, X, training=True):
-        """Forward pass: Take maximum in each window"""
         batch_size, channels, in_h, in_w = X.shape
-        
         out_h = (in_h - self.pool_size) // self.stride + 1
         out_w = (in_w - self.pool_size) // self.stride + 1
-        
-        output = np.zeros((batch_size, channels, out_h, out_w))
-        self.max_positions = {}
-        
-        for b in range(batch_size):
-            for c in range(channels):
-                for i in range(out_h):
-                    for j in range(out_w):
-                        h_start = i * self.stride
-                        h_end = h_start + self.pool_size
-                        w_start = j * self.stride
-                        w_end = w_start + self.pool_size
-                        
-                        window = X[b, c, h_start:h_end, w_start:w_end]
-                        max_val = np.max(window)
-                        output[b, c, i, j] = max_val
-                        
-                        # Store position of max for backprop
-                        max_idx = np.argmax(window)
-                        max_pos = np.unravel_index(max_idx, window.shape)
-                        self.max_positions[(b, c, i, j)] = (
-                            h_start + max_pos[0],
-                            w_start + max_pos[1]
-                        )
-        
-        self.cache['X'] = X
-        self.cache['output'] = output
+
+        if self.stride == self.pool_size:
+            windows = X.reshape(
+                batch_size,
+                channels,
+                out_h,
+                self.pool_size,
+                out_w,
+                self.pool_size,
+            )
+            flat_windows = windows.reshape(batch_size, channels, out_h, out_w, -1)
+            max_idx = np.argmax(flat_windows, axis=-1)
+            output = np.max(flat_windows, axis=-1)
+        else:
+            output = np.zeros((batch_size, channels, out_h, out_w), dtype=X.dtype)
+            max_idx = np.zeros((batch_size, channels, out_h, out_w), dtype=np.int64)
+            for i in range(out_h):
+                for j in range(out_w):
+                    h_start = i * self.stride
+                    w_start = j * self.stride
+                    window = X[:, :, h_start:h_start + self.pool_size, w_start:w_start + self.pool_size]
+                    flat = window.reshape(batch_size, channels, -1)
+                    max_idx[:, :, i, j] = np.argmax(flat, axis=-1)
+                    output[:, :, i, j] = np.max(flat, axis=-1)
+
+        self.cache = {
+            'X_shape': X.shape,
+            'max_idx': max_idx,
+            'out_h': out_h,
+            'out_w': out_w,
+        }
         return output
-    
+
     def backward(self, grad_output):
-        """Backward pass: Route gradients to max positions"""
-        X = self.cache['X']
-        batch_size, channels, in_h, in_w = X.shape
-        
-        dX = np.zeros_like(X)
-        
-        for b in range(batch_size):
-            for c in range(channels):
-                for i in range(grad_output.shape[2]):
-                    for j in range(grad_output.shape[3]):
-                        # Get position of max
-                        h_pos, w_pos = self.max_positions[(b, c, i, j)]
-                        # Route gradient to max position
-                        dX[b, c, h_pos, w_pos] += grad_output[b, c, i, j]
-        
+        X_shape = self.cache['X_shape']
+        max_idx = self.cache['max_idx']
+        out_h = self.cache['out_h']
+        out_w = self.cache['out_w']
+
+        batch_size, channels, in_h, in_w = X_shape
+        dX = np.zeros(X_shape, dtype=grad_output.dtype)
+        max_h, max_w = np.unravel_index(max_idx, (self.pool_size, self.pool_size))
+
+        for i in range(out_h):
+            for j in range(out_w):
+                h_start = i * self.stride
+                w_start = j * self.stride
+                dX[:, :, h_start + max_h[:, :, i, j], w_start + max_w[:, :, i, j]] += grad_output[:, :, i, j]
+
         return dX
 
+
 class AveragePool2D:
-    """Average Pooling layer from scratch"""
+    """Average Pooling layer from scratch."""
+
     def __init__(self, pool_size=2, stride=2):
         self.pool_size = pool_size
         self.stride = stride
         self.cache = {}
-    
+
     def forward(self, X, training=True):
-        """Forward pass: Take average in each window"""
         batch_size, channels, in_h, in_w = X.shape
-        
         out_h = (in_h - self.pool_size) // self.stride + 1
         out_w = (in_w - self.pool_size) // self.stride + 1
-        
-        output = np.zeros((batch_size, channels, out_h, out_w))
-        
-        for b in range(batch_size):
-            for c in range(channels):
-                for i in range(out_h):
-                    for j in range(out_w):
-                        h_start = i * self.stride
-                        h_end = h_start + self.pool_size
-                        w_start = j * self.stride
-                        w_end = w_start + self.pool_size
-                        
-                        window = X[b, c, h_start:h_end, w_start:w_end]
-                        output[b, c, i, j] = np.mean(window)
-        
-        self.cache['X'] = X
-        self.cache['output'] = output
+
+        if self.stride == self.pool_size:
+            windows = X.reshape(
+                batch_size,
+                channels,
+                out_h,
+                self.pool_size,
+                out_w,
+                self.pool_size,
+            )
+            output = windows.mean(axis=(3, 5))
+        else:
+            output = np.zeros((batch_size, channels, out_h, out_w), dtype=X.dtype)
+            for i in range(out_h):
+                for j in range(out_w):
+                    h_start = i * self.stride
+                    w_start = j * self.stride
+                    window = X[:, :, h_start:h_start + self.pool_size, w_start:w_start + self.pool_size]
+                    output[:, :, i, j] = window.mean(axis=(2, 3))
+
+        self.cache = {'X_shape': X.shape, 'out_h': out_h, 'out_w': out_w}
         return output
-    
+
     def backward(self, grad_output):
-        """Backward pass: Distribute gradients evenly"""
-        X = self.cache['X']
-        batch_size, channels, in_h, in_w = X.shape
-        
-        dX = np.zeros_like(X)
-        pool_size_float = float(self.pool_size ** 2)
-        
-        for b in range(batch_size):
-            for c in range(channels):
-                for i in range(grad_output.shape[2]):
-                    for j in range(grad_output.shape[3]):
-                        h_start = i * self.stride
-                        h_end = h_start + self.pool_size
-                        w_start = j * self.stride
-                        w_end = w_start + self.pool_size
-                        
-                        # Distribute gradient evenly across the window
-                        dX[b, c, h_start:h_end, w_start:w_end] += \
-                            grad_output[b, c, i, j] / pool_size_float
-        
+        X_shape = self.cache['X_shape']
+        out_h = self.cache['out_h']
+        out_w = self.cache['out_w']
+
+        dX = np.zeros(X_shape, dtype=grad_output.dtype)
+        scale = grad_output / float(self.pool_size ** 2)
+
+        for i in range(out_h):
+            for j in range(out_w):
+                h_start = i * self.stride
+                w_start = j * self.stride
+                dX[:, :, h_start:h_start + self.pool_size, w_start:w_start + self.pool_size] += scale[:, :, i, j, None, None]
+
         return dX

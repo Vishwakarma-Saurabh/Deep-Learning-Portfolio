@@ -201,9 +201,36 @@ class CNN:
                 layer.W = self.params[f'W_{i}']
                 layer.b = self.params[f'b_{i}']
     
+    def get_parameters(self):
+        return {key: value.copy() for key, value in self.params.items()}
+
+    def set_parameters(self, params):
+        self.params = {key: value.copy() for key, value in params.items()}
+        for i, layer in enumerate(self.layers):
+            if isinstance(layer, Conv2D):
+                layer.kernels = self.params[f'kernels_{i}']
+                layer.bias = self.params[f'bias_{i}']
+            elif isinstance(layer, BatchNorm2D):
+                layer.gamma = self.params[f'gamma_{i}']
+                layer.beta = self.params[f'beta_{i}']
+            elif isinstance(layer, Dense):
+                layer.W = self.params[f'W_{i}']
+                layer.b = self.params[f'b_{i}']
+
+    def forward_batches(self, X, batch_size=None, training=False):
+        batch_size = batch_size or self.config.BATCH_SIZE
+        if X.shape[0] <= batch_size:
+            return self.forward(X, training=training)
+
+        outputs = []
+        for start in range(0, X.shape[0], batch_size):
+            end = min(start + batch_size, X.shape[0])
+            outputs.append(self.forward(X[start:end], training=training))
+        return np.vstack(outputs)
+    
     def predict(self, X):
         """Make predictions"""
-        output = self.forward(X, training=False)
+        output = self.forward_batches(X, training=False)
         return np.argmax(output, axis=1)
     
     def compute_loss(self, y_true, y_pred, l2_lambda=0.0, label_smoothing=0.0):

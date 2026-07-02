@@ -1,7 +1,19 @@
+import os
+
 import numpy as np
 import matplotlib.pyplot as plt
 
 class Visualizer:
+    OUTPUT_DIR = 'outputs'
+
+    @classmethod
+    def _save_or_show(cls, fig, filename):
+        os.makedirs(cls.OUTPUT_DIR, exist_ok=True)
+        path = os.path.join(cls.OUTPUT_DIR, filename)
+        fig.savefig(path, dpi=120, bbox_inches='tight')
+        plt.close(fig)
+        print(f"Saved plot to {path}")
+
     @staticmethod
     def plot_training_history(history):
         """Plot training history"""
@@ -40,12 +52,12 @@ class Visualizer:
         axes[1, 1].grid(True, alpha=0.3)
         
         plt.tight_layout()
-        plt.show()
+        Visualizer._save_or_show(fig, 'training_history.png')
     
     @staticmethod
     def plot_conv_weights(model, num_filters=16):
         """Visualize convolutional kernels"""
-        # Find first conv layer
+        kernels = None
         for layer in model.layers:
             if hasattr(layer, 'kernels'):
                 kernels = layer.kernels
@@ -68,7 +80,7 @@ class Visualizer:
         
         plt.suptitle('Convolutional Filters')
         plt.tight_layout()
-        plt.show()
+        Visualizer._save_or_show(fig, 'conv_weights.png')
     
     @staticmethod
     def show_predictions(model, X, y, num_samples=12):

@@ -1,51 +1,46 @@
 import numpy as np
-from scipy.ndimage import rotate, shift, zoom
+
 
 class DataAugmentation:
-    """Data augmentation for images"""
+    """Lightweight augmentation for images."""
+
     def __init__(self, rotation_range=10, shift_range=0.1, zoom_range=0.1, rng=None):
         self.rotation_range = rotation_range
         self.shift_range = shift_range
         self.zoom_range = zoom_range
         self.rng = rng if rng is not None else np.random.default_rng(42)
-    
+
     def __call__(self, X, y=None):
-        """Apply augmentations to batch"""
-        augmented_X = []
-        
-        for img in X:
-            # img shape: (channels, height, width)
-            if len(img.shape) == 3:
-                img_2d = img[0]  # Extract single channel
-            else:
-                img_2d = img
-            
-            # Random rotation
-            if self.rotation_range > 0:
-                angle = self.rng.uniform(-self.rotation_range, self.rotation_range)
-                img_2d = rotate(img_2d, angle, reshape=False, order=1)
-            
-            # Random shift
+        if X.ndim == 4:
+            batch = X.copy()
+        else:
+            batch = X[None, ...]
+
+        if self.rotation_range <= 0 and self.shift_range <= 0 and self.zoom_range <= 0:
+            return batch
+
+        augmented = np.zeros_like(batch, dtype=np.float32)
+        for i in range(batch.shape[0]):
+            img = batch[i, 0]
+
             if self.shift_range > 0:
-                shift_x = self.rng.uniform(-self.shift_range, self.shift_range) * 28
-                shift_y = self.rng.uniform(-self.shift_range, self.shift_range) * 28
-                img_2d = shift(img_2d, [shift_y, shift_x], order=1)
-            
-            # Random zoom
+                shift_y = int(round(self.rng.uniform(-self.shift_range, self.shift_range) * 28))
+                shift_x = int(round(self.rng.uniform(-self.shift_range, self.shift_range) * 28))
+                img = np.roll(img, shift=(shift_y, shift_x), axis=(0, 1))
+
             if self.zoom_range > 0:
                 zoom_factor = self.rng.uniform(1 - self.zoom_range, 1 + self.zoom_range)
-                zoomed = zoom(img_2d, zoom_factor, order=1)
-                
-                if zoom_factor > 1:
-                    crop = (zoomed.shape[0] - 28) // 2
-                    img_2d = zoomed[crop:crop+28, crop:crop+28]
-                else:
-                    crop = (28 - zoomed.shape[0]) // 2
-                    new_img = np.zeros((28, 28))
-                    new_img[crop:crop+zoomed.shape[0], crop:crop+zoomed.shape[1]] = zoomed
-                    img_2d = new_img
-            
-            # Reshape back
-            augmented_X.append(img_2d.reshape(1, 28, 28))
-        
-        return np.array(augmented_X)
+                if zoom_factor != 1.0:
+                    new_h = max(1, int(round(img.shape[0] * zoom_factor)))
+                    new_w = max(1, int(round(img.shape[1] * zoom_factor)))
+                    if new_h != img.shape[0] or new_w != img.shape[1]:
+                        y_coords = np.linspace(0, img.shape[0] - 1, new_h)
+                        x_coords = np.linspace(0, img.shape[1] - 1, new_w)
+                        img = np.take(np.take(img, np.clip(y_coords.astype(int), 0, img.shape[0] - 1), axis=0), np.clip(x_coords.astype(int), 0, img.shape[1] - 1), axis=1)
+                    if img.shape[0] != 28 or img.shape[1] != 28:
+                        img = np.pad(img, ((0, max(0, 28 - img.shape[0])), (0, max(0, 28 - img.shape[1]))), mode='edge')
+                        img = img[:28, :28]
+
+            augmented[i, 0] = img
+
+        return augmented

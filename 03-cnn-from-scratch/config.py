@@ -26,9 +26,11 @@ class Config:
     FC_LAYERS = [128, 10]  # Hidden units, then output
     
     # ========== Training ==========
-    EPOCHS = 30
-    BATCH_SIZE = 128
-    
+    EPOCHS = 3
+    BATCH_SIZE = 64
+    MAX_TRAIN_SAMPLES = 4000
+    MAX_VAL_SAMPLES = 1000
+    MAX_TEST_SAMPLES = 1000
     # ========== Optimization ==========
     OPTIMIZER = 'adam'  # 'sgd', 'momentum', 'adam', 'adamw'
     LEARNING_RATE = 0.001
@@ -42,6 +44,7 @@ class Config:
     # ========== Regularization ==========
     DROPOUT_RATE = 0.5  # For FC layers
     USE_BATCH_NORM = True
+    USE_AUGMENTATION = False
     LABEL_SMOOTHING = 0.1
     
     # ========== Learning Rate Scheduling ==========

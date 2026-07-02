@@ -1,3 +1,8 @@
+import sys
+
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+
 import numpy as np
 from config import Config
 from models.cnn import CNN
@@ -11,6 +16,11 @@ def main():
     
     # Load data
     data_loader = DataLoader()
+    data_loader.set_limits(
+        train=Config.MAX_TRAIN_SAMPLES,
+        val=Config.MAX_VAL_SAMPLES,
+        test=Config.MAX_TEST_SAMPLES,
+    )
     data_loader.load_mnist(test_size=0.2, val_size=0.1)
     
     # Create model

@@ -16,7 +16,7 @@ class Trainer:
         self.optimizer = get_optimizer(
             config.OPTIMIZER,
             learning_rate=config.LEARNING_RATE,
-            weight_decay=config.WEIGHT_DECAY,
+            weight_decay=0.0,
             beta1=config.BETA1,
             beta2=config.BETA2,
             epsilon=config.EPSILON
@@ -67,7 +67,8 @@ class Trainer:
             y_batch = y_shuffled[start:end]
             
             # Augmentation
-            X_batch = self.augmenter(X_batch)
+            if getattr(self.config, 'USE_AUGMENTATION', False):
+                X_batch = self.augmenter(X_batch)
             
             # Forward
             y_pred = self.model.forward(X_batch, training=True)
@@ -77,10 +78,13 @@ class Trainer:
             
             # Update
             self.model.update_params(self.optimizer)
+
+            if batch_idx % max(1, total_batches // 5) == 0 or batch_idx + 1 == total_batches:
+                print(f"  batch {batch_idx + 1}/{total_batches} complete")
         
         # Evaluate
-        y_pred_train = self.model.forward(X_train, training=False)
-        y_pred_val = self.model.forward(X_val, training=False)
+        y_pred_train = self.model.forward_batches(X_train, training=False)
+        y_pred_val = self.model.forward_batches(X_val, training=False)
         
         train_loss = self.model.compute_loss(
             self.data_loader.one_hot_encode(y_train),
@@ -95,8 +99,8 @@ class Trainer:
             label_smoothing=self.config.LABEL_SMOOTHING
         )
         
-        train_acc = self.model.accuracy(X_train, y_train)
-        val_acc = self.model.accuracy(X_val, y_val)
+        train_acc = np.mean(np.argmax(y_pred_train, axis=1) == y_train) * 100
+        val_acc = np.mean(np.argmax(y_pred_val, axis=1) == y_val) * 100
         
         return train_loss, val_loss, train_acc, val_acc
     
@@ -179,7 +183,7 @@ class Trainer:
         return self.history
     
     def test(self, X_test, y_test):
-        y_pred = self.model.forward(X_test, training=False)
+        y_pred = self.model.forward_batches(X_test, training=False)
         test_loss = self.model.compute_loss(
             self.data_loader.one_hot_encode(y_test),
             y_pred,
