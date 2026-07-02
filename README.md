@@ -32,7 +32,7 @@ Custom CNNs, Grad-CAM visualization
 
 
 
-\### 🚧 04 - Sequence Models \& NLP \*(Coming Soon)\*
+\### ✅ 04 - Sequence Models \& NLP \*(./04-nlp-pipeline)\*
 
 Sentiment Analysis, Text Generation with LSTM
 
@@ -68,13 +68,12 @@ CNN + LSTM with Attention (Capstone)
 
 | 01 | Neural Network From Scratch | ✅ Complete |
 
-| 02 | Training Techniques | ⬜ Not Started |
+| 02 | Training Techniques | ✅ Complete |
 
-| 03 | CNN \& Transfer Learning | ⬜ Not Started |
+| 03 | CNN \& Transfer Learning | ✅ Complete |
 
-| 04 | Sequence Models \& NLP | ⬜ Not Started |
+| 04 | Sequence Models \& NLP | ✅ Complete |
 
 | 05 | Generative Models | ⬜ Not Started |
 
 | 06 | Image Captioning (Capstone) | ⬜ Not Started |
-
