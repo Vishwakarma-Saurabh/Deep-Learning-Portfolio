@@ -1,15 +1,4 @@
-from .adam import Adam
 from .sgd import SGD
+from .adam import Adam
 
-def get_optimizer(name, **kwargs):
-    optimizers = {
-        'sgd': SGD,
-        'momentum': SGD,
-        'adam': Adam,
-        'adamw': Adam,
-    }
-    
-    if name not in optimizers:
-        raise ValueError(f"Unknown optimizer: {name}")
-    
-    return optimizers[name](**kwargs)
+__all__ = ['SGD', 'Adam']

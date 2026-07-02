@@ -1,10 +1,10 @@
-"""
-Data package for loading and augmenting datasets
-"""
-from .dataset import DataLoader
-from .augmentations import DataAugmentation
+from .dataset import load_mnist, make_synthetic_dataset, DataLoader, one_hot
+from .augmentations import augment_batch
 
 __all__ = [
+    'load_mnist',
+    'make_synthetic_dataset',
     'DataLoader',
-    'DataAugmentation'
+    'one_hot',
+    'augment_batch',
 ]

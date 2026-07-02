@@ -1,25 +1,25 @@
+"""Inverted dropout layer."""
+
 import numpy as np
 
+
 class Dropout:
-    """Dropout regularization layer"""
-    def __init__(self, rate=0.5, rng=None):
-        self.rate = rate
-        self.rng = rng if rng is not None else np.random.default_rng(42)
+    def __init__(self, p=0.5):
+        """p: probability of dropping a unit (setting it to zero)."""
+        self.p = p
         self.mask = None
-        self.cache = {}
-    
-    def forward(self, X, training=True):
-        """Forward pass with dropout during training only"""
-        if training and self.rate > 0:
-            # Create mask and scale
-            self.mask = (self.rng.random(X.shape) > self.rate) / (1 - self.rate)
-            return X * self.mask
-        else:
-            self.mask = None
-            return X
-    
-    def backward(self, grad):
-        """Backward pass: Apply same mask"""
-        if self.mask is not None:
-            return grad * self.mask
-        return grad
+        self.training = True
+
+    def forward(self, x):
+        if self.training:
+            self.mask = (np.random.rand(*x.shape) > self.p) / (1.0 - self.p)
+            return x * self.mask
+        return x
+
+    def backward(self, dout):
+        if self.training:
+            return dout * self.mask
+        return dout
+
+    def params_and_grads(self):
+        return {}, {}

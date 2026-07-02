@@ -1,46 +1,58 @@
+"""Simple, dependency-free data augmentation functions for image batches
+shaped (N, C, H, W).
+"""
+
 import numpy as np
 
 
-class DataAugmentation:
-    """Lightweight augmentation for images."""
+def random_horizontal_flip(x, p=0.5):
+    out = x.copy()
+    for i in range(x.shape[0]):
+        if np.random.rand() < p:
+            out[i] = out[i, :, :, ::-1]
+    return out
 
-    def __init__(self, rotation_range=10, shift_range=0.1, zoom_range=0.1, rng=None):
-        self.rotation_range = rotation_range
-        self.shift_range = shift_range
-        self.zoom_range = zoom_range
-        self.rng = rng if rng is not None else np.random.default_rng(42)
 
-    def __call__(self, X, y=None):
-        if X.ndim == 4:
-            batch = X.copy()
-        else:
-            batch = X[None, ...]
+def random_rotation_90(x, p=0.5):
+    """Randomly rotates each sample by 90, 180, or 270 degrees."""
+    out = x.copy()
+    for i in range(x.shape[0]):
+        if np.random.rand() < p:
+            k = np.random.randint(1, 4)
+            out[i] = np.rot90(out[i], k, axes=(1, 2))
+    return out
 
-        if self.rotation_range <= 0 and self.shift_range <= 0 and self.zoom_range <= 0:
-            return batch
 
-        augmented = np.zeros_like(batch, dtype=np.float32)
-        for i in range(batch.shape[0]):
-            img = batch[i, 0]
+def add_gaussian_noise(x, mean=0.0, std=0.05):
+    noise = np.random.normal(mean, std, size=x.shape)
+    return np.clip(x + noise, 0.0, 1.0)
 
-            if self.shift_range > 0:
-                shift_y = int(round(self.rng.uniform(-self.shift_range, self.shift_range) * 28))
-                shift_x = int(round(self.rng.uniform(-self.shift_range, self.shift_range) * 28))
-                img = np.roll(img, shift=(shift_y, shift_x), axis=(0, 1))
 
-            if self.zoom_range > 0:
-                zoom_factor = self.rng.uniform(1 - self.zoom_range, 1 + self.zoom_range)
-                if zoom_factor != 1.0:
-                    new_h = max(1, int(round(img.shape[0] * zoom_factor)))
-                    new_w = max(1, int(round(img.shape[1] * zoom_factor)))
-                    if new_h != img.shape[0] or new_w != img.shape[1]:
-                        y_coords = np.linspace(0, img.shape[0] - 1, new_h)
-                        x_coords = np.linspace(0, img.shape[1] - 1, new_w)
-                        img = np.take(np.take(img, np.clip(y_coords.astype(int), 0, img.shape[0] - 1), axis=0), np.clip(x_coords.astype(int), 0, img.shape[1] - 1), axis=1)
-                    if img.shape[0] != 28 or img.shape[1] != 28:
-                        img = np.pad(img, ((0, max(0, 28 - img.shape[0])), (0, max(0, 28 - img.shape[1]))), mode='edge')
-                        img = img[:28, :28]
+def random_crop_pad(x, pad=2):
+    """Pads the image then randomly crops back to the original size, which
+    effectively performs a random translation.
+    """
+    N, C, H, W = x.shape
+    padded = np.pad(x, ((0, 0), (0, 0), (pad, pad), (pad, pad)), mode='constant')
+    out = np.zeros_like(x)
+    for i in range(N):
+        top = np.random.randint(0, 2 * pad + 1)
+        left = np.random.randint(0, 2 * pad + 1)
+        out[i] = padded[i, :, top:top + H, left:left + W]
+    return out
 
-            augmented[i, 0] = img
 
-        return augmented
+def augment_batch(x, flip=True, rotate=False, noise=True, crop=True):
+    """Applies a standard augmentation pipeline. Rotation is off by default
+    since it's a poor augmentation for digit datasets like MNIST (a rotated
+    6 can look like a 9).
+    """
+    if flip:
+        x = random_horizontal_flip(x)
+    if rotate:
+        x = random_rotation_90(x)
+    if crop:
+        x = random_crop_pad(x)
+    if noise:
+        x = add_gaussian_noise(x)
+    return x

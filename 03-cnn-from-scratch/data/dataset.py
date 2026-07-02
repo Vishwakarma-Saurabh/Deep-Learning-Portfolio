@@ -1,68 +1,94 @@
+"""Dataset loading utilities: MNIST downloader/parser, a synthetic-data
+fallback (useful when there's no internet access), and a simple mini-batch
+DataLoader.
+"""
+
+import gzip
+import os
+import urllib.request
+
 import numpy as np
-from sklearn.datasets import fetch_openml
-from sklearn.model_selection import train_test_split
+
+MNIST_URLS = {
+    'train_images': 'https://storage.googleapis.com/cvdf-datasets/mnist/train-images-idx3-ubyte.gz',
+    'train_labels': 'https://storage.googleapis.com/cvdf-datasets/mnist/train-labels-idx1-ubyte.gz',
+    'test_images': 'https://storage.googleapis.com/cvdf-datasets/mnist/t10k-images-idx3-ubyte.gz',
+    'test_labels': 'https://storage.googleapis.com/cvdf-datasets/mnist/t10k-labels-idx1-ubyte.gz',
+}
+
+
+def _download(url, path):
+    if not os.path.exists(path):
+        os.makedirs(os.path.dirname(path), exist_ok=True)
+        urllib.request.urlretrieve(url, path)
+
+
+def _load_images(path):
+    with gzip.open(path, 'rb') as f:
+        data = np.frombuffer(f.read(), np.uint8, offset=16)
+    return data.reshape(-1, 1, 28, 28).astype(np.float32) / 255.0
+
+
+def _load_labels(path):
+    with gzip.open(path, 'rb') as f:
+        data = np.frombuffer(f.read(), np.uint8, offset=8)
+    return data.astype(np.int64)
+
+
+def load_mnist(data_dir='./mnist_data'):
+    """Downloads (if needed) and loads the MNIST dataset.
+
+    Returns (x_train, y_train), (x_test, y_test) with images shaped
+    (N, 1, 28, 28) scaled to [0, 1], and integer labels shaped (N,).
+    """
+    paths = {}
+    for key, url in MNIST_URLS.items():
+        path = os.path.join(data_dir, os.path.basename(url))
+        _download(url, path)
+        paths[key] = path
+
+    x_train = _load_images(paths['train_images'])
+    y_train = _load_labels(paths['train_labels'])
+    x_test = _load_images(paths['test_images'])
+    y_test = _load_labels(paths['test_labels'])
+
+    return (x_train, y_train), (x_test, y_test)
+
+
+def one_hot(labels, num_classes=10):
+    out = np.zeros((labels.shape[0], num_classes))
+    out[np.arange(labels.shape[0]), labels] = 1
+    return out
+
+
+def make_synthetic_dataset(num_samples=200, num_classes=10, channels=1, height=28, width=28, seed=0):
+    """Generates random synthetic image data. Handy for quickly smoke-testing
+    the pipeline without needing to download a real dataset.
+    """
+    rng = np.random.default_rng(seed)
+    x = rng.standard_normal((num_samples, channels, height, width)).astype(np.float32)
+    y = rng.integers(0, num_classes, size=num_samples)
+    return x, y
+
 
 class DataLoader:
-    def __init__(self):
-        self.X_train = None
-        self.y_train = None
-        self.X_val = None
-        self.y_val = None
-        self.X_test = None
-        self.y_test = None
-        self.input_shape = None
-    
-    def load_mnist(self, test_size=0.2, val_size=0.1):
-        """Load MNIST dataset with proper shape (channels, height, width)."""
-        print("📂 Loading MNIST dataset...")
-        
-        X, y = fetch_openml('mnist_784', version=1, return_X_y=True, as_frame=False)
-        
-        # Normalize and reshape to (channels, height, width)
-        X = X.astype(np.float32) / 255.0
-        X = X.reshape(-1, 1, 28, 28)  # (batch, channels, height, width)
-        y = y.astype(np.int32)
-        
-        self.input_shape = X.shape[1:]
-        
-        # Split data
-        X_temp, X_test, y_temp, y_test = train_test_split(
-            X, y, test_size=test_size, random_state=42, stratify=y
-        )
-        
-        val_ratio = val_size / (1 - test_size)
-        X_train, X_val, y_train, y_val = train_test_split(
-            X_temp, y_temp, test_size=val_ratio, random_state=42, stratify=y_temp
-        )
-        
-        if hasattr(self, 'max_train_samples') and self.max_train_samples is not None:
-            X_train = X_train[:self.max_train_samples]
-            y_train = y_train[:self.max_train_samples]
-        if hasattr(self, 'max_val_samples') and self.max_val_samples is not None:
-            X_val = X_val[:self.max_val_samples]
-            y_val = y_val[:self.max_val_samples]
-        if hasattr(self, 'max_test_samples') and self.max_test_samples is not None:
-            X_test = X_test[:self.max_test_samples]
-            y_test = y_test[:self.max_test_samples]
+    """Simple mini-batch iterator with optional shuffling."""
 
-        self.X_train, self.y_train = X_train, y_train
-        self.X_val, self.y_val = X_val, y_val
-        self.X_test, self.y_test = X_test, y_test
-        
-        print(f"✅ Training set: {X_train.shape[0]} samples")
-        print(f"✅ Validation set: {X_val.shape[0]} samples")
-        print(f"✅ Test set: {X_test.shape[0]} samples")
-        
-        return self
-    
-    def set_limits(self, train=None, val=None, test=None):
-        self.max_train_samples = train
-        self.max_val_samples = val
-        self.max_test_samples = test
-        return self
+    def __init__(self, x, y, batch_size=32, shuffle=True):
+        self.x = x
+        self.y = y
+        self.batch_size = batch_size
+        self.shuffle = shuffle
+        self.num_samples = x.shape[0]
 
-    def one_hot_encode(self, y, num_classes=10):
-        n_samples = y.shape[0]
-        one_hot = np.zeros((n_samples, num_classes))
-        one_hot[np.arange(n_samples), y] = 1
-        return one_hot
+    def __iter__(self):
+        indices = np.arange(self.num_samples)
+        if self.shuffle:
+            np.random.shuffle(indices)
+
+        for start in range(0, self.num_samples, self.batch_size):
+            batch_idx = indices[start:start + self.batch_size]
+            yield self.x[batch_idx], self.y[batch_idx]
+
+    def __len__(self):
+        return int(np.ceil(self.num_samples / self.batch_size))

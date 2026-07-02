@@ -1,109 +1,94 @@
-import os
+"""Plotting helpers for training curves, learned filters, sample
+predictions, and a confusion matrix.
+"""
 
 import numpy as np
 import matplotlib.pyplot as plt
 
-class Visualizer:
-    OUTPUT_DIR = 'outputs'
 
-    @classmethod
-    def _save_or_show(cls, fig, filename):
-        os.makedirs(cls.OUTPUT_DIR, exist_ok=True)
-        path = os.path.join(cls.OUTPUT_DIR, filename)
-        fig.savefig(path, dpi=120, bbox_inches='tight')
-        plt.close(fig)
-        print(f"Saved plot to {path}")
+def plot_history(history, save_path=None):
+    fig, axes = plt.subplots(1, 2, figsize=(12, 4))
 
-    @staticmethod
-    def plot_training_history(history):
-        """Plot training history"""
-        fig, axes = plt.subplots(2, 2, figsize=(14, 10))
-        
-        # Loss
-        axes[0, 0].plot(history['train_loss'], label='Train Loss', linewidth=2)
-        axes[0, 0].plot(history['val_loss'], label='Val Loss', linewidth=2)
-        axes[0, 0].set_xlabel('Epoch')
-        axes[0, 0].set_ylabel('Loss')
-        axes[0, 0].set_title('Loss Over Time')
-        axes[0, 0].legend()
-        axes[0, 0].grid(True, alpha=0.3)
-        
-        # Accuracy
-        axes[0, 1].plot(history['train_acc'], label='Train Acc', linewidth=2)
-        axes[0, 1].plot(history['val_acc'], label='Val Acc', linewidth=2)
-        axes[0, 1].set_xlabel('Epoch')
-        axes[0, 1].set_ylabel('Accuracy (%)')
-        axes[0, 1].set_title('Accuracy Over Time')
-        axes[0, 1].legend()
-        axes[0, 1].grid(True, alpha=0.3)
-        
-        # Learning Rate
-        axes[1, 0].plot(history['lr'], color='green', linewidth=2)
-        axes[1, 0].set_xlabel('Epoch')
-        axes[1, 0].set_ylabel('Learning Rate')
-        axes[1, 0].set_title('Learning Rate')
-        axes[1, 0].grid(True, alpha=0.3)
-        
-        # Time
-        axes[1, 1].plot(np.cumsum(history['time']), linewidth=2)
-        axes[1, 1].set_xlabel('Epoch')
-        axes[1, 1].set_ylabel('Cumulative Time (s)')
-        axes[1, 1].set_title('Training Time')
-        axes[1, 1].grid(True, alpha=0.3)
-        
-        plt.tight_layout()
-        Visualizer._save_or_show(fig, 'training_history.png')
-    
-    @staticmethod
-    def plot_conv_weights(model, num_filters=16):
-        """Visualize convolutional kernels"""
-        kernels = None
-        for layer in model.layers:
-            if hasattr(layer, 'kernels'):
-                kernels = layer.kernels
-                break
-        
-        if kernels is None:
-            print("No convolutional layers found")
-            return
-        
-        # Plot first 16 kernels
-        fig, axes = plt.subplots(4, 4, figsize=(8, 8))
-        axes = axes.ravel()
-        
-        for i in range(min(num_filters, kernels.shape[0])):
-            # Average across input channels
-            kernel = kernels[i].mean(axis=0)
-            axes[i].imshow(kernel, cmap='RdBu_r')
-            axes[i].axis('off')
-            axes[i].set_title(f'Filter {i+1}')
-        
-        plt.suptitle('Convolutional Filters')
-        plt.tight_layout()
-        Visualizer._save_or_show(fig, 'conv_weights.png')
-    
-    @staticmethod
-    def show_predictions(model, X, y, num_samples=12):
-        """Show sample predictions"""
-        predictions = model.predict(X)
-        indices = np.random.choice(len(X), num_samples, replace=False)
-        
-        fig, axes = plt.subplots(3, 4, figsize=(12, 8))
-        axes = axes.ravel()
-        
-        for i, idx in enumerate(indices):
-            img = X[idx, 0]  # Remove channel dimension
-            true_label = y[idx]
-            pred_label = predictions[idx]
-            confidence = np.max(model.forward(X[idx:idx+1], training=False))
-            
-            axes[i].imshow(img, cmap='gray')
-            axes[i].axis('off')
-            color = 'green' if true_label == pred_label else 'red'
-            axes[i].set_title(
-                f'True: {true_label}\nPred: {pred_label}\nConf: {confidence:.2%}',
-                color=color
-            )
-        
-        plt.tight_layout()
-        plt.show()
+    axes[0].plot(history['train_loss'], label='train_loss')
+    if history.get('val_loss'):
+        axes[0].plot(history['val_loss'], label='val_loss')
+    axes[0].set_title('Loss')
+    axes[0].set_xlabel('Epoch')
+    axes[0].legend()
+
+    axes[1].plot(history['train_acc'], label='train_acc')
+    if history.get('val_acc'):
+        axes[1].plot(history['val_acc'], label='val_acc')
+    axes[1].set_title('Accuracy')
+    axes[1].set_xlabel('Epoch')
+    axes[1].legend()
+
+    plt.tight_layout()
+    if save_path:
+        plt.savefig(save_path)
+    plt.close(fig)
+
+
+def plot_filters(conv_layer, save_path=None):
+    """Visualizes the learned filters of a Conv2D layer (first input channel only)."""
+    weights = conv_layer.W  # (out_channels, in_channels, kh, kw)
+    num_filters = weights.shape[0]
+    cols = min(8, num_filters)
+    rows = int(np.ceil(num_filters / cols))
+
+    fig, axes = plt.subplots(rows, cols, figsize=(cols * 1.5, rows * 1.5))
+    axes = np.array(axes).reshape(-1)
+
+    for i in range(rows * cols):
+        ax = axes[i]
+        ax.axis('off')
+        if i < num_filters:
+            ax.imshow(weights[i, 0], cmap='gray')
+
+    plt.tight_layout()
+    if save_path:
+        plt.savefig(save_path)
+    plt.close(fig)
+
+
+def plot_confusion_matrix(y_true, y_pred, num_classes=10, save_path=None):
+    matrix = np.zeros((num_classes, num_classes), dtype=int)
+    for t, p in zip(y_true, y_pred):
+        matrix[t, p] += 1
+
+    fig, ax = plt.subplots(figsize=(6, 6))
+    im = ax.imshow(matrix, cmap='Blues')
+    ax.set_xlabel('Predicted')
+    ax.set_ylabel('True')
+    ax.set_title('Confusion Matrix')
+
+    for i in range(num_classes):
+        for j in range(num_classes):
+            ax.text(j, i, matrix[i, j], ha='center', va='center',
+                     color='white' if matrix[i, j] > matrix.max() / 2 else 'black')
+
+    fig.colorbar(im)
+    plt.tight_layout()
+    if save_path:
+        plt.savefig(save_path)
+    plt.close(fig)
+
+
+def show_sample_predictions(x, y_true, y_pred, num_samples=8, save_path=None):
+    num_samples = min(num_samples, x.shape[0])
+    fig, axes = plt.subplots(1, num_samples, figsize=(num_samples * 1.5, 2))
+    if num_samples == 1:
+        axes = [axes]
+
+    for i in range(num_samples):
+        ax = axes[i]
+        ax.axis('off')
+        img = x[i, 0] if x.shape[1] == 1 else np.transpose(x[i], (1, 2, 0))
+        ax.imshow(img, cmap='gray' if x.shape[1] == 1 else None)
+        color = 'green' if y_true[i] == y_pred[i] else 'red'
+        ax.set_title(f"T:{y_true[i]} P:{y_pred[i]}", color=color, fontsize=9)
+
+    plt.tight_layout()
+    if save_path:
+        plt.savefig(save_path)
+    plt.close(fig)

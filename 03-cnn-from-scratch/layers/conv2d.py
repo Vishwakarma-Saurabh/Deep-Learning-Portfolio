@@ -1,85 +1,108 @@
+"""2D convolution layer implemented from scratch with an im2col/col2im trick
+so the forward and backward passes reduce to matrix multiplications instead
+of slow Python loops over every output pixel.
+"""
+
 import numpy as np
-from numpy.lib.stride_tricks import sliding_window_view
+
+
+def get_im2col_indices(x_shape, field_height, field_width, padding=0, stride=1):
+    N, C, H, W = x_shape
+    out_height = (H + 2 * padding - field_height) // stride + 1
+    out_width = (W + 2 * padding - field_width) // stride + 1
+
+    i0 = np.repeat(np.arange(field_height), field_width)
+    i0 = np.tile(i0, C)
+    i1 = stride * np.repeat(np.arange(out_height), out_width)
+    j0 = np.tile(np.arange(field_width), field_height * C)
+    j1 = stride * np.tile(np.arange(out_width), out_height)
+    i = i0.reshape(-1, 1) + i1.reshape(1, -1)
+    j = j0.reshape(-1, 1) + j1.reshape(1, -1)
+
+    k = np.repeat(np.arange(C), field_height * field_width).reshape(-1, 1)
+
+    return k, i, j
+
+
+def im2col(x, field_height, field_width, padding=1, stride=1):
+    p = padding
+    x_padded = np.pad(x, ((0, 0), (0, 0), (p, p), (p, p)), mode='constant')
+    k, i, j = get_im2col_indices(x.shape, field_height, field_width, padding, stride)
+    cols = x_padded[:, k, i, j]
+    C = x.shape[1]
+    cols = cols.transpose(1, 2, 0).reshape(field_height * field_width * C, -1)
+    return cols
+
+
+def col2im(cols, x_shape, field_height, field_width, padding=1, stride=1):
+    N, C, H, W = x_shape
+    H_padded, W_padded = H + 2 * padding, W + 2 * padding
+    x_padded = np.zeros((N, C, H_padded, W_padded), dtype=cols.dtype)
+    k, i, j = get_im2col_indices(x_shape, field_height, field_width, padding, stride)
+    cols_reshaped = cols.reshape(C * field_height * field_width, -1, N)
+    cols_reshaped = cols_reshaped.transpose(2, 0, 1)
+    np.add.at(x_padded, (slice(None), k, i, j), cols_reshaped)
+    if padding == 0:
+        return x_padded
+    return x_padded[:, :, padding:-padding, padding:-padding]
 
 
 class Conv2D:
-    def __init__(self, in_channels, out_channels, kernel_size, padding=0, stride=1, rng=None):
+    """Standard 2D convolution layer.
+
+    Weights shape: (out_channels, in_channels, kernel_size, kernel_size)
+    """
+
+    def __init__(self, in_channels, out_channels, kernel_size=3, stride=1, padding=1, use_bias=True):
         self.in_channels = in_channels
         self.out_channels = out_channels
-        self.padding = padding
+        self.kernel_size = kernel_size
         self.stride = stride
+        self.padding = padding
+        self.use_bias = use_bias
 
-        if isinstance(kernel_size, int):
-            self.kernel_h = kernel_size
-            self.kernel_w = kernel_size
-        else:
-            self.kernel_h, self.kernel_w = kernel_size
+        # He initialization, good default for ReLU networks
+        scale = np.sqrt(2.0 / (in_channels * kernel_size * kernel_size))
+        self.W = np.random.randn(out_channels, in_channels, kernel_size, kernel_size) * scale
+        self.b = np.zeros((out_channels, 1))
 
-        self.rng = rng if rng is not None else np.random.default_rng(42)
+        self.dW = np.zeros_like(self.W)
+        self.db = np.zeros_like(self.b)
 
-        self.kernels = self.rng.normal(
-            0,
-            np.sqrt(2.0 / (in_channels * self.kernel_h * self.kernel_w)),
-            size=(out_channels, in_channels, self.kernel_h, self.kernel_w),
-        ).astype(np.float32)
-        self.bias = np.zeros(out_channels, dtype=np.float32)
+        self.x_cols = None
+        self.x_shape = None
 
-        self.cache = {}
+    def forward(self, x):
+        self.x_shape = x.shape
+        N, C, H, W = x.shape
+        F = self.kernel_size
+        out_h = (H + 2 * self.padding - F) // self.stride + 1
+        out_w = (W + 2 * self.padding - F) // self.stride + 1
 
-    def _output_shape(self, height, width):
-        out_h = (height + 2 * self.padding - self.kernel_h) // self.stride + 1
-        out_w = (width + 2 * self.padding - self.kernel_w) // self.stride + 1
-        return out_h, out_w
+        self.x_cols = im2col(x, F, F, self.padding, self.stride)
+        W_col = self.W.reshape(self.out_channels, -1)
 
-    def forward(self, X, training=True):
-        batch_size, in_channels, in_h, in_w = X.shape
-        self.cache['X'] = X
+        out = W_col @ self.x_cols
+        if self.use_bias:
+            out = out + self.b
+        out = out.reshape(self.out_channels, out_h, out_w, N)
+        out = out.transpose(3, 0, 1, 2)
+        return out
 
-        if self.padding > 0:
-            X_padded = np.pad(
-                X,
-                ((0, 0), (0, 0), (self.padding, self.padding), (self.padding, self.padding)),
-                mode='constant',
-            )
-        else:
-            X_padded = X
+    def backward(self, dout):
+        N = dout.shape[0]
+        dout_reshaped = dout.transpose(1, 2, 3, 0).reshape(self.out_channels, -1)
 
-        out_h, out_w = self._output_shape(in_h, in_w)
-        windows = sliding_window_view(X_padded, (self.kernel_h, self.kernel_w), axis=(2, 3))
-        windows = windows[:, :, ::self.stride, ::self.stride, :, :]
+        self.dW = (dout_reshaped @ self.x_cols.T).reshape(self.W.shape)
+        if self.use_bias:
+            self.db = np.sum(dout_reshaped, axis=1, keepdims=True)
 
-        output = np.einsum('biyxkl,oikl->boyx', windows, self.kernels, optimize=True)
-        output = output.astype(np.float32, copy=False)
-        output += self.bias[None, :, None, None]
+        W_col = self.W.reshape(self.out_channels, -1)
+        dx_cols = W_col.T @ dout_reshaped
+        dx = col2im(dx_cols, self.x_shape, self.kernel_size, self.kernel_size, self.padding, self.stride)
+        return dx
 
-        self.cache['output'] = output
-        self.cache['X_padded'] = X_padded
-        self.cache['windows'] = windows
-        return output
-
-    def backward(self, grad_output):
-        X = self.cache['X']
-        X_padded = self.cache['X_padded']
-        windows = self.cache['windows']
-        batch_size, in_channels, in_h, in_w = X.shape
-        _, _, out_h, out_w = grad_output.shape
-
-        dK = np.einsum('boyx,biyxkl->oikl', grad_output, windows, optimize=True) / batch_size
-        db = np.sum(grad_output, axis=(0, 2, 3)) / batch_size
-
-        dX_padded = np.zeros_like(X_padded)
-        for oc in range(self.out_channels):
-            for ic in range(in_channels):
-                kernel = self.kernels[oc, ic]
-                for kh in range(self.kernel_h):
-                    for kw in range(self.kernel_w):
-                        h_slice = slice(kh, kh + out_h * self.stride, self.stride)
-                        w_slice = slice(kw, kw + out_w * self.stride, self.stride)
-                        dX_padded[:, ic, h_slice, w_slice] += grad_output[:, oc] * kernel[kh, kw]
-
-        if self.padding > 0:
-            dX = dX_padded[:, :, self.padding:-self.padding, self.padding:-self.padding]
-        else:
-            dX = dX_padded
-
-        return dX, dK, db
+    def params_and_grads(self):
+        params = {'W': self.W, 'b': self.b}
+        grads = {'W': self.dW, 'b': self.db}
+        return params, grads

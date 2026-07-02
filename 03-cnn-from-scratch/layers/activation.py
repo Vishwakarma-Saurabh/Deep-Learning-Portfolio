@@ -1,54 +1,58 @@
+"""Activation function layers."""
+
 import numpy as np
 
-class Activation:
-    """Activation layer with multiple activation functions"""
-    def __init__(self, activation_type='relu'):
-        self.activation_type = activation_type
-        self.cache = {}
-    
-    def forward(self, X, training=True):
-        """Forward pass: Apply activation function"""
-        self.cache['X'] = X
-        
-        if self.activation_type == 'relu':
-            return np.maximum(0, X)
-        elif self.activation_type == 'leaky_relu':
-            return np.where(X > 0, X, 0.01 * X)
-        elif self.activation_type == 'sigmoid':
-            return 1.0 / (1.0 + np.exp(-np.clip(X, -500, 500)))
-        elif self.activation_type == 'softmax':
-            X_stable = X - np.max(X, axis=1, keepdims=True)
-            exp_X = np.exp(X_stable)
-            return exp_X / np.sum(exp_X, axis=1, keepdims=True)
-        elif self.activation_type == 'tanh':
-            return np.tanh(X)
-        else:
-            raise ValueError(f"Unknown activation: {self.activation_type}")
-    
-    def backward(self, grad):
-        """Backward pass: Apply derivative of activation"""
-        X = self.cache['X']
-        
-        if self.activation_type == 'relu':
-            return grad * (X > 0).astype(float)
-        elif self.activation_type == 'leaky_relu':
-            return grad * np.where(X > 0, 1.0, 0.01)
-        elif self.activation_type == 'sigmoid':
-            sig = 1.0 / (1.0 + np.exp(-np.clip(X, -500, 500)))
-            return grad * sig * (1 - sig)
-        elif self.activation_type == 'softmax':
-            return grad  # Combined with cross-entropy loss
-        elif self.activation_type == 'tanh':
-            return grad * (1 - np.tanh(X) ** 2)
-        else:
-            raise ValueError(f"Unknown activation: {self.activation_type}")
 
-class ReLU(Activation):
-    """ReLU activation layer"""
+class ReLU:
     def __init__(self):
-        super().__init__('relu')
+        self.mask = None
 
-class Softmax(Activation):
-    """Softmax activation layer"""
+    def forward(self, x):
+        self.mask = x > 0
+        return x * self.mask
+
+    def backward(self, dout):
+        return dout * self.mask
+
+    def params_and_grads(self):
+        return {}, {}
+
+
+class Sigmoid:
     def __init__(self):
-        super().__init__('softmax')
+        self.out = None
+
+    def forward(self, x):
+        self.out = 1 / (1 + np.exp(-np.clip(x, -500, 500)))
+        return self.out
+
+    def backward(self, dout):
+        return dout * self.out * (1 - self.out)
+
+    def params_and_grads(self):
+        return {}, {}
+
+
+class Softmax:
+    """Numerically stable softmax.
+
+    Note: when paired with cross-entropy loss, the combined gradient is
+    typically computed directly as (probs - one_hot_labels) for simplicity
+    and numerical stability (see training/trainer.py). backward() here is a
+    passthrough so the layer still behaves correctly if used standalone.
+    """
+
+    def __init__(self):
+        self.out = None
+
+    def forward(self, x):
+        shifted = x - np.max(x, axis=1, keepdims=True)
+        exp = np.exp(shifted)
+        self.out = exp / np.sum(exp, axis=1, keepdims=True)
+        return self.out
+
+    def backward(self, dout):
+        return dout
+
+    def params_and_grads(self):
+        return {}, {}
