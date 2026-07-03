@@ -75,6 +75,7 @@ outputs/
 results/
 checkpoints/
 mnist_data/
+MNIST/
 plots/
 
 # Temporary files
