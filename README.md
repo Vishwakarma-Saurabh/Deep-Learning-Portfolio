@@ -38,13 +38,13 @@ Sentiment Analysis, Text Generation with LSTM
 
 
 
-\### 🚧 05 - Generative Models \*(Coming Soon)\*
+\### ✅ 05 - Generative Models \*(./05-generative-models)\*
 
 VAE, GAN, Diffusion Models
 
 
 
-\### 🚧 06 - Image Captioning \*(Coming Soon)\*
+\### ✅ 06 - Medical image diagnosis \*(./06-medical-X-ray-diagnosis)\*
 
 CNN + LSTM with Attention (Capstone)
 
@@ -74,6 +74,6 @@ CNN + LSTM with Attention (Capstone)
 
 | 04 | Sequence Models \& NLP | ✅ Complete |
 
-| 05 | Generative Models | ⬜ Not Started |
+| 05 | Generative Models | ✅ Complete |
 
-| 06 | Image Captioning (Capstone) | ⬜ Not Started |
+| 06 | Medical image diagnosis | ✅ Complete |
