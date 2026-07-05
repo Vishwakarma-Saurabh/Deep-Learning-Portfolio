@@ -1,0 +1,10 @@
+CONTRACT AGREEMENT
+    
+    Section 1: Liability
+    The liability cap for any damages arising from this agreement is set at $500,000.
+    
+    Section 2: Termination
+    Either party may terminate this agreement with 30 days written notice.
+    
+    Section 3: Data Protection
+    Both parties shall comply with GDPR requirements for data handling and processing.
