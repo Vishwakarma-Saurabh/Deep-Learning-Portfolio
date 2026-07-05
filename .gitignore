@@ -33,10 +33,31 @@ wheels/
 .venv/
 venv/
 env/
+.env
 ENV/
 .venv*/
 02-training-techniques/.venv/
 **/__pycache__/
+
+# Qdrant storage
+qdrant_storage/
+
+# Models (too large)
+*.bin
+*.pth
+*.gguf
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Test files
+sample_contract.txt
+
 
 # ============================================================
 # IDEs
