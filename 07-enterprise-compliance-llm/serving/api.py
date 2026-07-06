@@ -14,7 +14,7 @@ from pydantic import BaseModel
 import tempfile
 import os
 
-from agents.tools.compliance_tool import check_compliance
+from compliance import check_compliance
 from ingestion.document_parser import parse_document
 from ingestion.chunker import chunk_text
 from ingestion.embed_and_store import embed_and_store
@@ -110,38 +110,29 @@ async def health_check():
 
 @app.post("/audit")
 async def audit_document(file: UploadFile = File(...)):
-    """
-    Audit a document for compliance violations.
-    Returns violation report with severity and explanations.
-    """
+    """Audit a document for compliance violations."""
     
-    # Save uploaded file
     with tempfile.NamedTemporaryFile(delete=False, suffix=file.filename) as tmp:
         tmp.write(await file.read())
         tmp_path = tmp.name
     
     try:
-        # Parse document
         parsed = parse_document(tmp_path)
         if "error" in parsed:
             raise HTTPException(status_code=400, detail=parsed["error"])
         
-        # Chunk into clauses
-        chunks = chunk_text(parsed["text"], chunk_size=300, overlap=50)
+        chunks = chunk_text(parsed["text"], chunk_size=200, overlap=30)
         
-        # Check each chunk
         violations = []
         safe_count = 0
         
         for chunk in chunks:
             result = check_compliance(chunk["text"])
-            
             if result["violation"] != "SAFE":
                 violations.append(result)
             else:
                 safe_count += 1
         
-        # Generate summary
         high_risk = len([v for v in violations if v["severity"] == "HIGH"])
         medium_risk = len([v for v in violations if v["severity"] == "MEDIUM"])
         
@@ -150,11 +141,7 @@ async def audit_document(file: UploadFile = File(...)):
             "total_clauses": len(chunks),
             "violations_found": len(violations),
             "safe_clauses": safe_count,
-            "risk_summary": {
-                "high": high_risk,
-                "medium": medium_risk,
-                "low": len(violations) - high_risk - medium_risk
-            },
+            "risk_breakdown": {"high": high_risk, "medium": medium_risk},
             "violations": violations
         }
     
