@@ -58,6 +58,9 @@ Thumbs.db
 # Test files
 sample_contract.txt
 
+# BUT KEEP THESE (they go to GitHub):
+# !compliance_lora/
+# !fine_tuning/dataset/
 
 # ============================================================
 # IDEs
