@@ -94,8 +94,8 @@ python serving/api.py
 
 # Run tests in another terminal
 python test_rag.py
-Expected output:
 
+# Expected output:
 === Testing RAG System ===
 
 ✓ API is running
@@ -115,11 +115,67 @@ Vector Search	Cosine similarity in Qdrant
 API Design	RESTful endpoints with FastAPI
 Inference	Deployment with Groq
 
-🔮 Next Milestone
-Fine-tuned compliance violation classifier
-Multi-document agentic workflows
-Security layer with PII redaction
-LLMOps monitoring dashboard
+## 🎯 Milestone 2: Fine-Tuned Compliance Classifier
+
+### What's New
+- **Fine-tuned Model**: Custom LoRA adapter trained on 200 legal clauses
+- **Violation Detection**: Automatically identifies GDPR and SOX violations
+- **Risk Scoring**: Classifies severity as HIGH/MEDIUM/LOW
+- **Audit Endpoint**: Upload contract → Get violation report
+
+### Architecture Addition
+Fine-Tuned Llama-3.2-1B (LoRA)
+↓
+Contract Clauses → Violation Detection → Risk Report
+↓
+GDPR Art.6, SOX Sec.404, etc.
+
+### New Concepts Learned
+- **QLoRA Fine-Tuning**: 4-bit quantization enables CPU training
+- **Synthetic Data Generation**: Using LLM to create training data
+- **Instruction Tuning**: Formatting data for task-specific training
+- **Model Evaluation**: Accuracy metrics for multi-class classification
+
+### New Endpoints
+# Audit a contract for violations
+curl -X POST http://localhost:8001/audit \
+  -F "file=@contract.pdf"
+
+# Files Added
+fine_tuning/
+├── generate_dataset.py    # Creates 200 synthetic clauses
+├── train_lora.py          # QLoRA fine-tuning on CPU
+└── eval_model.py          # Accuracy evaluation
+
+agents/tools/
+└── compliance_tool.py     # Fine-tuned model inference
+
+|__ test_audit.py
+
+## How to Run
+# 1. Generate training data (uses Groq - free)
+python fine_tuning/generate_dataset.py
+
+# 2. Train the model (30-60 min on CPU)
+python fine_tuning/train_lora.py
+
+# 3. Test the audit endpoint
+python test_audit.py
+---
+
+🚀 Execution Order
+# 1. Generate dataset (5-10 minutes)
+python fine_tuning/generate_dataset.py
+
+# 2. Train model (30-60 minutes on CPU)
+python fine_tuning/train_lora.py
+
+# 3. Evaluate model
+python fine_tuning/eval_model.py
+
+# 4. Restart API and test
+python serving/api.py
+python test_audit.py
 
 📜 License
 MIT

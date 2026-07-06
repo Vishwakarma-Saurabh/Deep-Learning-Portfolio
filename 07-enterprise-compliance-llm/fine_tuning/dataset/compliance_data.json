@@ -1,0 +1,1202 @@
+[
+  {
+    "text": "The Company reserves the right to collect, store, and use any personal data without user consent.",
+    "label": "GDPR_Violation",
+    "explanation": "GDPR requires explicit user consent for data processing, and no consent is given in this clause.",
+    "severity": "HIGH"
+  },
+  {
+    "text": "The Company shall share user data with any third-party entity without prior notification or consent.",
+    "label": "GDPR_Violation",
+    "explanation": "No user consent or notification for data transfers, violating GDPR Article 13 transparency requirements.",
+    "severity": "HIGH"
+  },
+  {
+    "text": "All user data collected by the Company will be retained indefinitely without any schedule for deletion.",
+    "label": "GDPR_Violation",
+    "explanation": "GDPR requires data minimization and retention limits, and this clause fails to establish a deletion schedule.",
+    "severity": "MEDIUM"
+  },
+  {
+    "text": "In case of data breaches, the Company is not obligated to notify affected users or regulatory bodies.",
+    "label": "GDPR_Violation",
+    "explanation": "GDPR requires prompt notification of data breaches to affected users and regulatory bodies.",
+    "severity": "HIGH"
+  },
+  {
+    "text": "Users agree to waive their rights to data protection under the GDPR by signing this agreement.",
+    "label": "GDPR_Violation",
+    "explanation": "GDPR rights cannot be waived by users, and this clause is in violation of user rights and GDPR Article 7.",
+    "severity": "HIGH"
+  },
+  {
+    "text": "The Contractor may disclose Customer Payment Information to third-party vendors for processing without the Customer's explicit consent.",
+    "label": "GDPR_Violation",
+    "explanation": "Disclosure of payment information without consent violates GDPR Article 6 (lawfulness of processing) and Article 46 (transfer to third countries).",
+    "severity": "HIGH"
+  },
+  {
+    "text": "All payment card information shall be stored in clear text on our servers for auditing purposes.",
+    "label": "GDPR_Violation",
+    "explanation": "Storing payment card information in clear text without encryption puts sensitive data at risk, violating GDPR Article 32 (security of processing requirements).",
+    "severity": "HIGH"
+  },
+  {
+    "text": "In the event of a payment dispute, we reserve the right to share Customer payment information with our affiliates without their consent.",
+    "label": "GDPR_Violation",
+    "explanation": "Sharing payment information with affiliates without consent or proper data protection mechanisms in place violates GDPR Article 26 (joint controllers and processors) and Article 49 (data transfer requirements).",
+    "severity": "HIGH"
+  },
+  {
+    "text": "We may use Customer payment data for marketing purposes without their explicit opt-out.",
+    "label": "GDPR_Violation",
+    "explanation": "Using payment data for marketing purposes without explicit consent or proper data protection mechanisms in place violates GDPR Article 6 (lawfulness of processing) and Article 21 (right to object).",
+    "severity": "HIGH"
+  },
+  {
+    "text": "Customer payment information may be shared with our business partners, including those located in countries without adequate data protection laws.",
+    "label": "GDPR_Violation",
+    "explanation": "Sharing payment information with business partners in countries without adequate data protection laws violates GDPR Article 44-49 (data transfer requirements).",
+    "severity": "HIGH"
+  },
+  {
+    "text": "In the event of termination, Company reserves the right to retain user data indefinitely without informing users.",
+    "label": "GDPR_Violation",
+    "explanation": "Retention of user data without consent or notification upon termination, violating GDPR Article 17 and Article 19.",
+    "severity": "HIGH"
+  },
+  {
+    "text": "Termination of this agreement does not automatically revoke access to shared data with third-party vendors.",
+    "label": "GDPR_Violation",
+    "explanation": "No control over data access after termination, potentially exposing personal data to unauthorized parties.",
+    "severity": "HIGH"
+  },
+  {
+    "text": "Company may continue to store and process data after termination, without notification to users or deletion of data.",
+    "label": "GDPR_Violation",
+    "explanation": "Retention and processing of data post-termination without user consent or notification, violating GDPR Article 17 and Article 19.",
+    "severity": "HIGH"
+  },
+  {
+    "text": "Upon termination, all data will be automatically transferred to Company's affiliated entities without user consent.",
+    "label": "GDPR_Violation",
+    "explanation": "Transfer of user data to affiliated entities without consent or notification, violating GDPR Article 25 (cross-border data transfer).",
+    "severity": "HIGH"
+  },
+  {
+    "text": "Company is not obligated to inform users of data breaches or unauthorized access to data during the contract's term.",
+    "label": "GDPR_Violation",
+    "explanation": "No breach notification obligations during the contract term, violating GDPR Article 33 and Article 34.",
+    "severity": "HIGH"
+  },
+  {
+    "text": "In the event of a data breach, the company shall not notify affected users or regulatory bodies, and shall only inform the board of directors.",
+    "label": "GDPR_Violation",
+    "explanation": "Failed to comply with GDPR Article 33 breach notification requirements, putting users' rights at risk.",
+    "severity": "HIGH"
+  },
+  {
+    "text": "Any damages or losses resulting from the company's collection, use, or sharing of personal data shall not be the company's responsibility.",
+    "label": "GDPR_Violation",
+    "explanation": "Excessive limitation on liability, which may be deemed unfair and in contravention with GDPR Article 82, which aims to ensure fair compensation for data subjects.",
+    "severity": "HIGH"
+  },
+  {
+    "text": "This agreement grants the company an unrestricted right to use and share user data with its affiliates and partners worldwide.",
+    "label": "GDPR_Violation",
+    "explanation": "No data protection safeguards or consent requirements, which is a clear violation of users' rights under GDPR Article 5.",
+    "severity": "HIGH"
+  },
+  {
+    "text": "In no event shall the company be liable for consequential damages or lost profits resulting from a data breach.",
+    "label": "GDPR_Violation",
+    "explanation": "Excessive limitation on liability, as GDPR Article 82 requires that companies must provide fair compensation to data subjects for damages resulting from a breach.",
+    "severity": "HIGH"
+  },
+  {
+    "text": "The company shall have the right to share user data with law enforcement agencies and national security organizations without any prior consent or notice.",
+    "label": "GDPR_Violation",
+    "explanation": "No data protection safeguards or consent requirements, which may be deemed excessive and a potential violation of GDPR Article 5, which restricts the processing of personal data.",
+    "severity": "HIGH"
+  },
+  {
+    "text": "Client information, including personal data, will be shared with third-party vendors without the client's prior consent.",
+    "label": "GDPR_Violation",
+    "explanation": "No explicit client consent for data sharing, violating GDPR Article 6(1)(a) consent requirements.",
+    "severity": "HIGH"
+  },
+  {
+    "text": "Upon termination of employment, all employees will forfeit their right to confidentiality, allowing the company to disclose their personal data to any third party.",
+    "label": "GDPR_Violation",
+    "explanation": "No proper data protection measures in place upon employee termination, potentially exposing their personal data to unauthorized parties.",
+    "severity": "HIGH"
+  },
+  {
+    "text": "Company data shall not be encrypted, and employees are expected to store sensitive information in plain text.",
+    "label": "GDPR_Violation",
+    "explanation": "No adequate data protection measures in place, violating GDPR Article 32 data protection requirements.",
+    "severity": "HIGH"
+  },
+  {
+    "text": "Confidential information disclosed to contractors may be freely shared among their employees, affiliates, and subsidiaries.",
+    "label": "GDPR_Violation",
+    "explanation": "No controls in place to limit the sharing of confidential information with third-party contractors' personnel, exposing client data to unauthorized parties.",
+    "severity": "MEDIUM"
+  },
+  {
+    "text": "Data breaches will be handled on an as-needed basis, and the company is not obligated to notify affected parties.",
+    "label": "GDPR_Violation",
+    "explanation": "No clear breach notification procedures in place, violating GDPR Article 33(1) notification requirements.",
+    "severity": "MEDIUM"
+  },
+  {
+    "text": "The company shall disclose all user data to third-party vendors without obtaining user consent or providing a data protection agreement.",
+    "label": "GDPR_Violation",
+    "explanation": "No user consent or data protection agreement, violating GDPR Article 6 and Article 28 data processing requirements.",
+    "severity": "HIGH"
+  },
+  {
+    "text": "Our company may share user information with law enforcement agencies without a court order or prior notification to users.",
+    "label": "GDPR_Violation",
+    "explanation": "No prior notification to users and reliance on law enforcement, potentially violating GDPR Article 11 and Article 47 data subject rights.",
+    "severity": "HIGH"
+  },
+  {
+    "text": "In the event of a merger or acquisition, the company shall transfer all user data to the acquiring entity without notifying users or obtaining their consent.",
+    "label": "GDPR_Violation",
+    "explanation": "No notification to users or obtaining consent before data transfer, potentially violating GDPR Article 5 data protection principles.",
+    "severity": "HIGH"
+  },
+  {
+    "text": "The company shall disclose user data to third-party data analytics firms for marketing purposes without user opt-out.",
+    "label": "GDPR_Violation",
+    "explanation": "No user consent or opt-out for data disclosure, violating GDPR Article 6 and Article 21 data subject rights.",
+    "severity": "HIGH"
+  },
+  {
+    "text": "Our company shall automatically transfer user data to third-party contractors without notifying users or providing them with a means to object or withdraw consent.",
+    "label": "GDPR_Violation",
+    "explanation": "No notification to users or means to object, violating GDPR Article 6 and Article 7 data protection requirements.",
+    "severity": "HIGH"
+  },
+  {
+    "text": "Company may access, use, and share customer data as necessary without prior consent or notification to customers.",
+    "label": "GDPR_Violation",
+    "explanation": "Lack of customer consent and notification for data processing, violating GDPR Article 6 and 13.",
+    "severity": "HIGH"
+  },
+  {
+    "text": "Company shall maintain data backup and disaster recovery procedures in a third-party cloud storage without encryption.",
+    "label": "GDPR_Violation",
+    "explanation": "Sensitive data stored in unsecured third-party cloud storage, violating GDPR Article 32 data protection requirements.",
+    "severity": "HIGH"
+  },
+  {
+    "text": "Company shall provide access to sensitive customer data to all employees without proper access controls or permissions.",
+    "label": "GDPR_Violation",
+    "explanation": "Uncontrolled access to sensitive data, violating GDPR Article 32 data protection requirements.",
+    "severity": "HIGH"
+  },
+  {
+    "text": "Company shall share customer data with regulatory bodies or law enforcement without proper justification or court order.",
+    "label": "GDPR_Violation",
+    "explanation": "Unjustified data sharing with regulatory bodies or law enforcement, violating GDPR Article 48 data protection requirements.",
+    "severity": "HIGH"
+  },
+  {
+    "text": "Company shall store customer data in an unsecured file sharing platform for an indefinite period without regular backups or deletion.",
+    "label": "GDPR_Violation",
+    "explanation": "Sensitive data stored in unsecured file sharing platform without proper data protection measures, violating GDPR Article 32 requirements.",
+    "severity": "HIGH"
+  },
+  {
+    "text": "The Company shall allow unrestricted access to all systems and databases for auditors at any time without prior notice.",
+    "label": "GDPR_Violation",
+    "explanation": "No data protection or breach notification plan in place, exposing sensitive data to unauthorized access.",
+    "severity": "HIGH"
+  },
+  {
+    "text": "In the event of a breach, the Company shall not notify affected individuals or regulatory authorities within 72 hours as required by law.",
+    "label": "GDPR_Violation",
+    "explanation": "Failure to notify affected parties within the stipulated timeframe, breaching GDPR breach notification requirements.",
+    "severity": "HIGH"
+  },
+  {
+    "text": "The Company reserves the right to share user data with third-party vendors for auditing purposes without explicit user consent.",
+    "label": "GDPR_Violation",
+    "explanation": "No user consent obtained for data sharing, potentially violating GDPR Article 6 conditions.",
+    "severity": "HIGH"
+  },
+  {
+    "text": "Auditors shall have unlimited access to Company data and systems, including sensitive personal data, without any restrictions or data protection measures.",
+    "label": "GDPR_Violation",
+    "explanation": "No data protection in place for sensitive personal data, breaching GDPR data protection principles.",
+    "severity": "HIGH"
+  },
+  {
+    "text": "The Company shall not provide any information or documentation to auditors regarding data processing activities, including data subjects' rights.",
+    "label": "GDPR_Violation",
+    "explanation": "No transparency or information provided to auditors on data processing activities, breaching GDPR transparency requirements.",
+    "severity": "HIGH"
+  },
+  {
+    "text": "The Company reserves the right to collect, use, and disclose personal data of customers without their consent.",
+    "label": "GDPR_Violation",
+    "explanation": "No explicit customer consent obtained for data processing, violating GDPR Article 6(1)(a) consent requirements.",
+    "severity": "HIGH"
+  },
+  {
+    "text": "All employee data shall be stored on an unsecured server accessible to anyone within the company.",
+    "label": "GDPR_Violation",
+    "explanation": "Employee data not adequately protected, violating GDPR Article 32 data protection principles.",
+    "severity": "HIGH"
+  },
+  {
+    "text": "The Company may disclose customer data to third-party advertising companies for marketing purposes.",
+    "label": "GDPR_Violation",
+    "explanation": "No opt-out options or customer consent for data sharing with third-party advertisers, violating GDPR Article 6(4) and Article 21 right to object.",
+    "severity": "HIGH"
+  },
+  {
+    "text": "Any employee found to have breached data security may be subject to disciplinary action without notification of a data breach.",
+    "label": "GDPR_Violation",
+    "explanation": "Breach notification not required for internal data breaches, violating GDPR Article 33 and Article 34 breach notification requirements.",
+    "severity": "HIGH"
+  },
+  {
+    "text": "Data collected from users shall be stored in our cloud storage services with no guarantees of data security or backup.",
+    "label": "GDPR_Violation",
+    "explanation": "Insufficient data protection measures in place, violating GDPR Article 32 and Article 33 data protection and breach notification requirements.",
+    "severity": "HIGH"
+  },
+  {
+    "text": "The Contractor agrees to provide payment information including credit card numbers and bank account details without encryption, and the Company shall store this information indefinitely.",
+    "label": "GDPR_Violation",
+    "explanation": "No encryption for sensitive payment information, storing data indefinitely without user consent or proper protection, violating GDPR Article 32 security requirements.",
+    "severity": "HIGH"
+  },
+  {
+    "text": "Upon termination, the Company shall deduct any outstanding fees from the Customer's payment method without prior notification, even if the Customer disputes the charges.",
+    "label": "GDPR_Violation",
+    "explanation": "No breach notification or user consent for automated payment deductions, violating GDPR Article 34 notification requirements.",
+    "severity": "HIGH"
+  },
+  {
+    "text": "The Company reserves the right to share customer payment information with third-party vendors, partners, or affiliates without explicit user consent.",
+    "label": "GDPR_Violation",
+    "explanation": "No user consent or proper data protection for payment information sharing, violating GDPR Article 26 data sharing requirements.",
+    "severity": "HIGH"
+  },
+  {
+    "text": "Payment processing fees shall be deducted from the Customer's account without proper disclosure, and the Company shall not provide itemized receipts or explanations for these charges.",
+    "label": "GDPR_Violation",
+    "explanation": "No transparency or disclosure for payment processing fees, violating GDPR Article 11 transparency requirements.",
+    "severity": "MEDIUM"
+  },
+  {
+    "text": "In the event of a payment dispute, the Company shall freeze the Customer's account without notification, pending resolution, and may deduct any fees or interest during this period.",
+    "label": "GDPR_Violation",
+    "explanation": "No breach notification or user consent for freezing accounts or deducting fees, violating GDPR Article 34 notification requirements.",
+    "severity": "HIGH"
+  },
+  {
+    "text": "The Company's financial reports will be prepared using accounting software that does not maintain a complete audit trail of all transactions. All financial records will be stored on a single, unencrypted server, accessible to all employees.",
+    "label": "SOX_Violation",
+    "explanation": "Missing audit trail and lack of secure storage for financial records may lead to inaccurate reporting and financial misrepresentation, violating SOX regulations.",
+    "severity": "HIGH"
+  },
+  {
+    "text": "The Company may make false claims about its data processing capabilities in promotional materials without providing evidence to support these claims. This includes statements about data security and compliance with industry standards.",
+    "label": "SOX_Violation",
+    "explanation": "Financial misrepresentation through false claims about data processing capabilities may lead to penalties under SOX for misleading investors.",
+    "severity": "HIGH"
+  },
+  {
+    "text": "The Company will not maintain accurate records of all financial transactions, including those made through its online payment system. These records will be kept in a separate, unsecured database that is not regularly backed up.",
+    "label": "SOX_Violation",
+    "explanation": "Improper record keeping, including lack of secure storage and regular backups, may lead to financial misrepresentation and inaccurate financial reporting, violating SOX regulations.",
+    "severity": "HIGH"
+  },
+  {
+    "text": "The Company will not conduct regular audits of its financial data processing systems to ensure compliance with SOX regulations. This includes audits for security vulnerabilities, data integrity, and access controls.",
+    "label": "SOX_Violation",
+    "explanation": "Missing regular audits may lead to undetected financial misrepresentation and security breaches, violating SOX regulations.",
+    "severity": "MEDIUM"
+  },
+  {
+    "text": "The Company's financial data processing systems are not designed to provide a complete and accurate record of all financial transactions. This includes transactions made through its online payment system.",
+    "label": "SOX_Violation",
+    "explanation": "Financial misrepresentation through inaccurate financial reports may lead to penalties under SOX for misleading investors.",
+    "severity": "MEDIUM"
+  },
+  {
+    "text": "The company may alter payment terms without prior notice to customers, including but not limited to changes to payment schedules and fees.",
+    "label": "SOX_Violation",
+    "explanation": "Financial misrepresentation: altering payment terms without notice to customers, violating transparency requirements.",
+    "severity": "HIGH"
+  },
+  {
+    "text": "All financial transactions will be recorded manually and stored in a physical logbook, to be reviewed quarterly.",
+    "label": "SOX_Violation",
+    "explanation": "Missing audit trails: manual record-keeping and lack of digital audit trails may lead to data inconsistencies.",
+    "severity": "MEDIUM"
+  },
+  {
+    "text": "The company reserves the right to adjust payment deadlines at any time without prior notification to customers.",
+    "label": "SOX_Violation",
+    "explanation": "Financial misrepresentation: adjusting payment deadlines without notice to customers, violating transparency requirements.",
+    "severity": "HIGH"
+  },
+  {
+    "text": "Financial records will be kept for a minimum of 3 months before being destroyed, no digital backups will be maintained.",
+    "label": "SOX_Violation",
+    "explanation": "Improper record keeping: lack of digital backups and limited record retention period may lead to data loss.",
+    "severity": "MEDIUM"
+  },
+  {
+    "text": "The company will only use internal accounting software for financial transactions, and records will not be reviewed by external auditors.",
+    "label": "SOX_Violation",
+    "explanation": "Missing audit trails: lack of external auditor review and reliance on internal accounting software may lead to data inconsistencies.",
+    "severity": "MEDIUM"
+  },
+  {
+    "text": "In the event of termination, the company reserves the right to alter or modify the terms and conditions of this agreement without prior notice to the client.",
+    "label": "SOX_Violation",
+    "explanation": "Lack of clear record-keeping and audit trails for agreement modifications and terminations, potentially hiding financial misrepresentations.",
+    "severity": "HIGH"
+  },
+  {
+    "text": "The company shall maintain inaccurate records of client payments and terminations, with no audit trail or verification.",
+    "label": "SOX_Violation",
+    "explanation": "Improper record-keeping and lack of audit trails for client payments and terminations, facilitating financial misrepresentation.",
+    "severity": "HIGH"
+  },
+  {
+    "text": "The agreement will automatically renew for an additional 6 months if not terminated in writing within 30 days of the original expiration date.",
+    "label": "SOX_Violation",
+    "explanation": "Inadequate notice period and unclear renewal terms, potentially leading to unintended financial commitments and misrepresentation.",
+    "severity": "MEDIUM"
+  },
+  {
+    "text": "In case of termination, the company will retain all confidential information and intellectual property of the client without providing necessary documentation or audit trails.",
+    "label": "SOX_Violation",
+    "explanation": "Missing audit trails and lack of transparency in data handling and retention post-termination, potentially hiding financial misrepresentations.",
+    "severity": "HIGH"
+  },
+  {
+    "text": "The company will not provide timely notifications to clients of termination or renewal, instead, relying on client-initiated inquiries for updates.",
+    "label": "SOX_Violation",
+    "explanation": "Inadequate notice and communication, potentially leading to misunderstandings and financial misrepresentations.",
+    "severity": "MEDIUM"
+  },
+  {
+    "text": "In the event of any dispute or claim arising out of or relating to this Agreement, the Company's financial records shall be based on management's estimates rather than actual figures.",
+    "label": "SOX_Violation",
+    "explanation": "Financial misrepresentation by using management's estimates instead of actual figures, violating SOX requirements for accurate financial reporting.",
+    "severity": "HIGH"
+  },
+  {
+    "text": "The Company shall maintain no audit trails of financial transactions, relying solely on internal controls to prevent errors or irregularities.",
+    "label": "SOX_Violation",
+    "explanation": "No audit trails for financial transactions, violating SOX requirements for reliable and accurate financial record-keeping.",
+    "severity": "HIGH"
+  },
+  {
+    "text": "All financial statements and reports issued by the Company shall be signed by the CEO, rather than an independent auditor.",
+    "label": "SOX_Violation",
+    "explanation": "Lack of independent auditor signature, violating SOX requirements for external verification of financial statements.",
+    "severity": "HIGH"
+  },
+  {
+    "text": "The Company's record-keeping procedures shall include the destruction of all financial records after a period of five years, rather than the required minimum of seven years.",
+    "label": "SOX_Violation",
+    "explanation": "Inadequate record-keeping procedures, violating SOX requirements for retaining financial records for a minimum of seven years.",
+    "severity": "MEDIUM"
+  },
+  {
+    "text": "The Company's financial reporting shall be based on the calendar year, but the financial statements shall be issued quarterly, without reconciliation to the annual statements.",
+    "label": "SOX_Violation",
+    "explanation": "Inadequate financial reporting practices, violating SOX requirements for accurate and consistent financial reporting.",
+    "severity": "HIGH"
+  },
+  {
+    "text": "The company may alter financial records without a paper trail and destroy records after three years without proper documentation.",
+    "label": "SOX_Violation",
+    "explanation": "Lack of audit trails and record destruction without proper documentation can lead to financial misrepresentation and concealment of material information from shareholders.",
+    "severity": "HIGH"
+  },
+  {
+    "text": "The auditor is not permitted to review or audit any company records for the next five years.",
+    "label": "SOX_Violation",
+    "explanation": "Restricting auditor access to company records can impede their ability to detect and report financial misstatements, violating SOX requirements.",
+    "severity": "HIGH"
+  },
+  {
+    "text": "The company is not required to maintain accurate and complete financial records for at least seven years. All financial records may be shredded after seven years.",
+    "label": "SOX_Violation",
+    "explanation": "Failing to maintain sufficient financial records for the required period and authorizing destruction of records can lead to financial misrepresentation.",
+    "severity": "HIGH"
+  },
+  {
+    "text": "The CFO is not responsible for providing accurate financial information to shareholders. The company shall not be liable for any financial misrepresentation.",
+    "label": "SOX_Violation",
+    "explanation": "Shifting responsibility for financial misrepresentation away from the CFO and removing company liability can undermine investor trust and conceal material information.",
+    "severity": "HIGH"
+  },
+  {
+    "text": "The company has not implemented sufficient internal controls to prevent or detect financial misstatements. Management is not required to certify the accuracy of financial reports.",
+    "label": "SOX_Violation",
+    "explanation": "Failing to establish adequate internal controls and management certification can lead to financial misrepresentation and concealment of material information from shareholders.",
+    "severity": "HIGH"
+  },
+  {
+    "text": "The Company may disclose financial information to third-party service providers without prior audit trail or documentation, for the purpose of outsourcing certain financial processes.",
+    "label": "SOX_Violation",
+    "explanation": "Missing audit trails and improper record keeping for financial disclosures, violating SOX Section 302 and 404 requirements.",
+    "severity": "HIGH"
+  },
+  {
+    "text": "All financial statements shall be reviewed by third-party auditors, but the Company reserves the right to conceal any information deemed confidential.",
+    "label": "SOX_Violation",
+    "explanation": "Financial misrepresentation due to selective information sharing, violating SOX Section 302 and 404 requirements for transparency.",
+    "severity": "HIGH"
+  },
+  {
+    "text": "The Company is not required to maintain any records of financial dealings with third-party partners and may destroy such records at any time.",
+    "label": "SOX_Violation",
+    "explanation": "Missing audit trails and improper record keeping for financial dealings, violating SOX Section 302 and 404 requirements.",
+    "severity": "HIGH"
+  },
+  {
+    "text": "In the event of a financial dispute, the Company shall disclose third-party communications to the disputing party without any redaction or confidentiality agreement.",
+    "label": "SOX_Violation",
+    "explanation": "Financial misrepresentation due to selective information sharing, violating SOX Section 302 and 404 requirements for transparency.",
+    "severity": "HIGH"
+  },
+  {
+    "text": "All financial records related to third-party transactions shall be stored on a single, non-encrypted server for easy access.",
+    "label": "SOX_Violation",
+    "explanation": "Missing audit trails and improper record keeping for financial records, violating SOX Section 302 and 404 requirements.",
+    "severity": "HIGH"
+  },
+  {
+    "text": "The company shall maintain financial records for a period of one year, but these records will be stored on an unencrypted and unsecured network drive accessible to all employees.",
+    "label": "SOX_Violation",
+    "explanation": "Inadequate storage of financial records, failing to meet SOX requirements for secure and auditable financial data.",
+    "severity": "MEDIUM"
+  },
+  {
+    "text": "The company's financial statements will not include any information about the risks associated with third-party vendor contracts.",
+    "label": "SOX_Violation",
+    "explanation": "Failure to disclose material risks related to third-party vendors, violating SOX requirements for accurate and transparent financial reporting.",
+    "severity": "MEDIUM"
+  },
+  {
+    "text": "The company shall maintain an audit trail, but it will only log user activity for the current quarter, and logs will be deleted after six months.",
+    "label": "SOX_Violation",
+    "explanation": "Inadequate audit trail retention, failing to meet SOX requirements for a complete and permanent record of user activity.",
+    "severity": "HIGH"
+  },
+  {
+    "text": "Financial reports will be prepared and certified by management, but internal controls will not be evaluated or tested to ensure their effectiveness.",
+    "label": "SOX_Violation",
+    "explanation": "Failure to evaluate and test internal controls, violating SOX requirements for a robust and effective internal control framework.",
+    "severity": "MEDIUM"
+  },
+  {
+    "text": "The company will not retain financial records in electronic form and will instead store them in paper files accessible to all employees.",
+    "label": "SOX_Violation",
+    "explanation": "Inadequate record-keeping practices, failing to meet SOX requirements for accurate and easily accessible financial data.",
+    "severity": "MEDIUM"
+  },
+  {
+    "text": "The Company reserves the right to destroy all audit logs older than 6 months, without prior notice to the Auditor or any regulatory body.",
+    "label": "SOX_Violation",
+    "explanation": "Destroying audit logs prematurely violates SOX's requirement for maintaining sufficient records for at least 7 years.",
+    "severity": "HIGH"
+  },
+  {
+    "text": "The Auditor is limited to reviewing only financial statements and not any underlying accounting records.",
+    "label": "SOX_Violation",
+    "explanation": "Restricting the scope of the audit to only financial statements hinders the Auditor's ability to ensure accurate financial reporting.",
+    "severity": "MEDIUM"
+  },
+  {
+    "text": "The Company shall maintain records of all transactions for a period of only 3 years, after which they can be destroyed.",
+    "label": "SOX_Violation",
+    "explanation": "Maintaining records for less than the required 7 years compromises the integrity and completeness of the financial records.",
+    "severity": "HIGH"
+  },
+  {
+    "text": "The Auditor must provide written notice to the Company 30 days prior to the commencement of any audit, allowing for the Company to prepare and conceal any discrepancies.",
+    "label": "SOX_Violation",
+    "explanation": "Providing the Company with advance notice of audits compromises the Auditor's ability to conduct an independent examination.",
+    "severity": "HIGH"
+  },
+  {
+    "text": "The Company shall only allow the Auditor to review and verify a sample of financial data, rather than an entire dataset.",
+    "label": "SOX_Violation",
+    "explanation": "Auditing only a sample of financial data can lead to a lack of accuracy and a failure to detect material weaknesses.",
+    "severity": "MEDIUM"
+  },
+  {
+    "text": "The company's financial records will be stored on an unsecured server with no password protection, and IT staff will periodically delete system logs.",
+    "label": "SOX_Violation",
+    "explanation": "Financial records and system logs are not properly secured, violating SOX requirements for accurate and accessible records.",
+    "severity": "HIGH"
+  },
+  {
+    "text": "All audit trails and access logs will be deleted after 6 months, and financial reporting will be done quarterly instead of monthly.",
+    "label": "SOX_Violation",
+    "explanation": "Insufficient audit trails and record keeping may conceal financial misrepresentation and other financial discrepancies.",
+    "severity": "HIGH"
+  },
+  {
+    "text": "The company will not maintain a centralized system for tracking financial transactions, and financial reports will only be reviewed annually.",
+    "label": "SOX_Violation",
+    "explanation": "Improper financial record keeping and infrequent review may lead to financial misrepresentation and non-compliance with SOX.",
+    "severity": "HIGH"
+  },
+  {
+    "text": "The company will keep financial records for only 5 years as required by state law, and financial statements will not include detailed descriptions of financial transactions.",
+    "label": "SOX_Violation",
+    "explanation": "Inadequate financial record keeping and incomplete financial statements may conceal financial misrepresentation and non-compliance with SOX.",
+    "severity": "HIGH"
+  },
+  {
+    "text": "The company's financial reports will not include a separate audit report, and IT staff will have unlimited access to financial data without logging their activities.",
+    "label": "SOX_Violation",
+    "explanation": "Missing audit reports and unsecured financial data may lead to financial misrepresentation and non-compliance with SOX.",
+    "severity": "HIGH"
+  },
+  {
+    "text": "The company shall record all financial transactions two weeks after their occurrence, rather than in real-time.",
+    "label": "SOX_Violation",
+    "explanation": "Delayed record-keeping of financial transactions may lead to inaccurate financial reporting, violating SOX's requirement for timely and accurate financial disclosure.",
+    "severity": "HIGH"
+  },
+  {
+    "text": "The company's audit committee shall meet only quarterly, with no provision for special meetings in case of major financial discrepancies.",
+    "label": "SOX_Violation",
+    "explanation": "Infrequent audit committee meetings may hinder the timely detection and reporting of financial irregularities, compromising SOX's requirement for effective internal controls.",
+    "severity": "HIGH"
+  },
+  {
+    "text": "The company's accounting department is allowed to alter financial statements without documentation, as long as the changes are minor.",
+    "label": "SOX_Violation",
+    "explanation": "Unauthorized alterations to financial statements without proper documentation can lead to unreliable financial reporting, violating SOX's requirement for accurate and transparent financial disclosure.",
+    "severity": "HIGH"
+  },
+  {
+    "text": "The company's financial reports shall not include any information about related-party transactions, unless specifically requested by investors.",
+    "label": "SOX_Violation",
+    "explanation": "Omitting related-party transactions from financial reports can conceal material information, violating SOX's requirement for transparent and accurate financial disclosure.",
+    "severity": "MEDIUM"
+  },
+  {
+    "text": "The company's CEO is authorized to personally approve or reject any financial transactions exceeding $1 million, without oversight from the audit committee.",
+    "label": "SOX_Violation",
+    "explanation": "Concentration of authority in a single individual for making significant financial decisions can lead to a lack of checks and balances, compromising SOX's requirement for effective internal controls.",
+    "severity": "HIGH"
+  },
+  {
+    "text": "The Company shall process Personal Data only for the purposes described in the Data Processing Agreement and in compliance with all applicable laws, including GDPR and CCPA. The Company shall ensure that all Personal Data is accurate, complete, and up-to-date. The Company shall also implement technical and organizational measures to ensure the confidentiality, integrity, and availability of Personal Data.",
+    "label": "SAFE",
+    "explanation": "This clause outlines proper data processing and compliance with applicable laws, ensuring accurate and secure handling of personal data.",
+    "severity": "LOW"
+  },
+  {
+    "text": "In the event of a data breach, the Company shall notify affected individuals and regulatory authorities within 72 hours of becoming aware of the breach. The Company shall also conduct a thorough investigation and provide any required assistance to affected individuals.",
+    "label": "SAFE",
+    "explanation": "This clause ensures timely breach notification and investigation, demonstrating a proactive approach to data security.",
+    "severity": "LOW"
+  },
+  {
+    "text": "The Company shall obtain explicit consent from users before collecting, storing, or processing their Personal Data. The Company shall also maintain a record of all user consents and data processing activities.",
+    "label": "SAFE",
+    "explanation": "This clause prioritizes user consent and maintains transparency, adhering to best practices for data protection.",
+    "severity": "LOW"
+  },
+  {
+    "text": "The Company shall implement robust security measures to protect Personal Data, including encryption, access controls, and regular security audits. The Company shall also ensure the confidentiality, integrity, and availability of Personal Data.",
+    "label": "SAFE",
+    "explanation": "This clause outlines comprehensive security measures to safeguard personal data, ensuring its confidentiality and integrity.",
+    "severity": "LOW"
+  },
+  {
+    "text": "The Company shall establish a Data Protection Officer (DPO) responsible for overseeing data protection practices, ensuring compliance with applicable laws, and investigating data breaches. The Company shall also provide regular data protection training to employees.",
+    "label": "SAFE",
+    "explanation": "This clause demonstrates a commitment to data protection by designating a DPO and providing regular training to employees.",
+    "severity": "LOW"
+  },
+  {
+    "text": "All invoice payments are due within 30 days from the invoice date. A late payment fee of 2% per month will be applied to outstanding balances.",
+    "label": "SAFE",
+    "explanation": "Clear payment terms and consequences of late payment are outlined in the contract.",
+    "severity": "LOW"
+  },
+  {
+    "text": "The Company will issue invoices electronically via email and will provide a paper copy upon request. Payment methods include wire transfer, check, and credit card.",
+    "label": "SAFE",
+    "explanation": "Standard payment methods and communication are specified, enabling efficient payment processing.",
+    "severity": "LOW"
+  },
+  {
+    "text": "The Company reserves the right to change payment terms, including payment methods and deadlines, with 30 days' written notice to the Customer.",
+    "label": "SAFE",
+    "explanation": "Contractual flexibility is maintained while providing notice period for changes to payment terms.",
+    "severity": "LOW"
+  },
+  {
+    "text": "All fees and charges will be itemized on the invoice and are payable in the currency specified on the invoice. Currency exchange rates will be based on the date of payment.",
+    "label": "SAFE",
+    "explanation": "Clear invoicing and payment procedures minimize financial disputes and promote transparency.",
+    "severity": "LOW"
+  },
+  {
+    "text": "The Customer shall provide a payment guarantee to cover any losses arising from non-payment or delayed payment of invoices. The amount of the guarantee will be determined by the Company's credit department.",
+    "label": "SAFE",
+    "explanation": "Risk management is addressed through a payment guarantee, which mitigates potential financial losses.",
+    "severity": "LOW"
+  },
+  {
+    "text": "Upon termination of this Agreement, the Client shall immediately cease use of the Services and return all proprietary materials to the Provider. The Provider shall have the right to audit the Client's premises to ensure compliance with this clause.",
+    "label": "SAFE",
+    "explanation": "Clearly outlines termination procedure, including return of proprietary materials and audit rights, ensuring compliance and protecting the Provider's interests.",
+    "severity": "LOW"
+  },
+  {
+    "text": "This Agreement shall be automatically renewed for a period of one (1) year, unless either party provides written notice of termination at least thirty (30) days prior to the end of the current term. The renewal terms shall be the same as the original Agreement.",
+    "label": "SAFE",
+    "explanation": "Provides clear and predictable renewal terms, avoiding potential disputes and ensuring a smooth continuation of the business relationship.",
+    "severity": "LOW"
+  },
+  {
+    "text": "In the event of termination, the Provider shall refund to the Client any prepaid fees for unused Services. The Client shall be responsible for any outstanding invoices due prior to termination.",
+    "label": "SAFE",
+    "explanation": "Clearly outlines refund and payment obligations, protecting the Client's interests and providing a fair resolution in case of termination.",
+    "severity": "LOW"
+  },
+  {
+    "text": "Either party may terminate this Agreement upon written notice to the other party in the event of a material breach that remains uncured for a period of fifteen (15) days. In such event, the terminating party shall provide a detailed explanation of the breach.",
+    "label": "SAFE",
+    "explanation": "Provides a fair and clear process for termination due to material breach, ensuring transparency and protecting both parties' interests.",
+    "severity": "LOW"
+  },
+  {
+    "text": "Upon termination or expiration of this Agreement, the Provider shall provide the Client with all necessary documentation and support to ensure a smooth transition of Services. The Client shall cooperate fully with the Provider during this process.",
+    "label": "SAFE",
+    "explanation": "Ensures a smooth transition of Services and provides necessary support to the Client upon termination or expiration, protecting the Provider's interests and maintaining a positive relationship.",
+    "severity": "LOW"
+  },
+  {
+    "text": "The Company shall indemnify and hold harmless the Client, its officers, directors, employees, and agents from and against any and all claims, damages, losses, and expenses arising out of or related to any third-party claims against the Client to the extent caused by the Company's breach of this Agreement or the Client's use of the Services provided by the Company.",
+    "label": "SAFE",
+    "explanation": "Properly written indemnification clause with clear definitions and limitations.",
+    "severity": "LOW"
+  },
+  {
+    "text": "The Client shall not be liable for any indirect, special, incidental, or consequential damages arising out of this Agreement, including but not limited to loss of business or opportunity, loss of goodwill, and loss of profits.",
+    "label": "SAFE",
+    "explanation": "Clear exclusion of indirect damages, aligning with standard liability limitations in commercial contracts.",
+    "severity": "LOW"
+  },
+  {
+    "text": "In the event of any breach of this Agreement by the Company, the Client shall be entitled to seek damages or injunctive relief in accordance with applicable law. Notwithstanding the foregoing, if the Company's breach is willful or grossly negligent, the Client may also seek liquidated damages as specified in Section 3 of this Agreement.",
+    "label": "SAFE",
+    "explanation": "Clear remedy for Client in case of breach, with escalating consequences for willful or grossly negligent breaches.",
+    "severity": "LOW"
+  },
+  {
+    "text": "The Company shall maintain adequate insurance coverage, including professional liability insurance, to cover its liability under this Agreement, and shall provide proof of such coverage to the Client upon request.",
+    "label": "SAFE",
+    "explanation": "Requirement for Company to maintain adequate insurance coverage, ensuring liability is properly insured.",
+    "severity": "LOW"
+  },
+  {
+    "text": "The Client acknowledges that it has read, understands, and agrees to be bound by the terms and conditions of this Agreement, including the liability and indemnification provisions, and agrees to defend, indemnify, and hold harmless the Company, its officers, directors, employees, and agents from and against any claims or damages arising out of the Client's breach of this Agreement.",
+    "label": "SAFE",
+    "explanation": "Client's acknowledgement of liability and indemnification obligations, ensuring mutual understanding and responsibility.",
+    "severity": "LOW"
+  },
+  {
+    "text": "Each party agrees to maintain the confidentiality of all confidential information received from the other party during the Term and for a period of five (5) years after the expiration or termination of this Agreement. Confidential information includes, but is not limited to, trade secrets, business plans, financial information, and any other information designated as confidential at the time of disclosure.",
+    "label": "SAFE",
+    "explanation": "Properly defines confidential information and duration of confidentiality obligations.",
+    "severity": "LOW"
+  },
+  {
+    "text": "During the Term and for a period of five (5) years after termination, the parties agree not to disclose or use any confidential information received from the other party for any purpose other than as permitted under this Agreement. This obligation applies to all employees, contractors, and agents.",
+    "label": "SAFE",
+    "explanation": "Comprehensive confidentiality obligations apply to all third parties and prevent unauthorized use.",
+    "severity": "LOW"
+  },
+  {
+    "text": "In the event of a breach of confidentiality, the non-breaching party shall be entitled to seek injunctive relief and damages. The parties agree to indemnify and hold each other harmless from any claims arising from a breach of confidentiality.",
+    "label": "SAFE",
+    "explanation": "Provides for remedies in case of a breach and includes indemnitification.",
+    "severity": "LOW"
+  },
+  {
+    "text": "The parties acknowledge that confidential information may be subject to applicable laws and regulations, including trade secrets. By entering into this Agreement, the parties agree to comply with all applicable laws and regulations related to confidential information.",
+    "label": "SAFE",
+    "explanation": "Acknowledges the potential legal implications of confidential information and requires compliance with relevant laws.",
+    "severity": "LOW"
+  },
+  {
+    "text": "Any confidential information that is not marked as confidential at the time of disclosure shall not be considered confidential for the purposes of this Agreement. However, this exception shall not limit the obligations of confidentiality set forth in this Agreement.",
+    "label": "SAFE",
+    "explanation": "Clearly defines the scope of confidential information and excludes unmarked information.",
+    "severity": "LOW"
+  },
+  {
+    "text": "Where Company shares Customer Data with Third-Party Providers, it shall first obtain the Customer's prior explicit written consent to do so. The consent shall be specific, informed, and voluntary, and shall clearly specify the identity of the Third-Party Providers and the purposes of the data sharing.",
+    "label": "SAFE",
+    "explanation": "Clause clearly outlines the need for explicit customer consent for third-party data sharing, aligning with GDPR requirements.",
+    "severity": "LOW"
+  },
+  {
+    "text": "Before sharing Customer Data with Third-Party Providers, Company shall execute a written agreement that includes provisions for data security, confidentiality, and the Third-Party Provider's compliance with all applicable data protection laws.",
+    "label": "SAFE",
+    "explanation": "Clause ensures that third-party agreements include necessary data protections, safeguarding customer data against unauthorized disclosure or misuse.",
+    "severity": "LOW"
+  },
+  {
+    "text": "In the event of a data breach involving Customer Data shared with Third-Party Providers, Company shall notify the affected Customers and relevant regulatory authorities in accordance with applicable laws and regulations.",
+    "label": "SAFE",
+    "explanation": "Clause requires prompt notification of data breaches to customers and regulatory authorities, adhering to breach notification obligations under GDPR.",
+    "severity": "LOW"
+  },
+  {
+    "text": "Company shall only share Customer Data with Third-Party Providers that have implemented and maintain robust data security measures, including encryption, access controls, and regular security audits.",
+    "label": "SAFE",
+    "explanation": "Clause ensures that third-party providers handling customer data adhere to robust security standards, minimizing the risk of unauthorized access or data misuse.",
+    "severity": "LOW"
+  },
+  {
+    "text": "Company shall maintain accurate and detailed records of all Customer Data shared with Third-Party Providers, including the names of the providers, the purposes of the data sharing, and the duration of the sharing arrangement.",
+    "label": "SAFE",
+    "explanation": "Clause requires Company to keep records of third-party data sharing arrangements, facilitating compliance with audit requirements under SOX.",
+    "severity": "LOW"
+  },
+  {
+    "text": "The Company shall maintain robust security measures to protect User Data, including but not limited to, encryption, firewalls, and secure access controls. All access to User Data shall be logged and monitored for compliance with data protection regulations.",
+    "label": "SAFE",
+    "explanation": "This clause includes clear security measures and compliance requirements, ensuring robust protection of user data.",
+    "severity": "LOW"
+  },
+  {
+    "text": "Upon discovery of a security breach, the Company shall notify affected Users and regulatory authorities within 72 hours. The Company shall also conduct a thorough investigation and implement corrective actions to prevent future breaches.",
+    "label": "SAFE",
+    "explanation": "This clause outlines clear breach notification and response procedures, demonstrating compliance with relevant regulations.",
+    "severity": "LOW"
+  },
+  {
+    "text": "The Company's security policies and procedures shall be regularly reviewed and updated to ensure compliance with the latest industry standards and best practices. All security personnel shall undergo annual training and certification programs.",
+    "label": "SAFE",
+    "explanation": "This clause demonstrates a commitment to ongoing security awareness and compliance with industry standards.",
+    "severity": "LOW"
+  },
+  {
+    "text": "All physical access to Company premises and data centers shall be strictly monitored and controlled through secure badge access systems. Authorized personnel shall be required to sign in and out and adhere to strict confidentiality agreements.",
+    "label": "SAFE",
+    "explanation": "This clause outlines strong physical security measures to prevent unauthorized access to premises and data.",
+    "severity": "LOW"
+  },
+  {
+    "text": "The Company shall maintain strict access controls to its systems and networks, including multi-factor authentication, role-based access, and strict session timeouts. All system and network access shall be monitored and logged for compliance purposes.",
+    "label": "SAFE",
+    "explanation": "This clause outlines robust access control measures to prevent unauthorized system and network access.",
+    "severity": "LOW"
+  },
+  {
+    "text": "The Company shall grant the Auditor access to all facilities, personnel, and electronic systems necessary to conduct an audit, as reasonably requested, at least 14 days in advance. The Auditor may observe and inspect the operation of the Company's facilities and may make copies of or remove any documents or records it deems relevant.",
+    "label": "SAFE",
+    "explanation": "This clause provides clear audit rights and sufficient notice to the Company, ensuring compliance with regulatory requirements.",
+    "severity": "LOW"
+  },
+  {
+    "text": "The Company shall maintain accurate, complete, and current financial records, including all ledgers, journals, and other supporting documentation, for a period of not less than 7 years. The Company shall grant the Auditor access to such records, upon reasonable request, for the purpose of verifying the accuracy of financial statements.",
+    "label": "SAFE",
+    "explanation": "This clause ensures proper financial record-keeping and provides audit access to relevant documentation.",
+    "severity": "LOW"
+  },
+  {
+    "text": "The Auditor shall have the right to inspect and copy all relevant documents and records, including but not limited to, contracts, agreements, financial statements, and any other records that may be relevant to the audit. The Company shall provide the Auditor with all necessary access and assistance to complete the audit.",
+    "label": "SAFE",
+    "explanation": "This clause explicitly defines the scope of audit rights and ensures that the Auditor has necessary access to relevant records.",
+    "severity": "LOW"
+  },
+  {
+    "text": "The Company shall be responsible for providing the Auditor with all necessary information and assistance to complete the audit, including answering any questions and providing explanations regarding Company policies, procedures, and financial transactions.",
+    "label": "SAFE",
+    "explanation": "This clause ensures the Company's cooperation and transparency in the audit process.",
+    "severity": "LOW"
+  },
+  {
+    "text": "In the event of a dispute or any other disagreement, the Company and the Auditor shall attempt to resolve the issue through good faith negotiations. If negotiations are unsuccessful, the dispute shall be submitted to binding arbitration in accordance with the rules of the American Arbitration Association.",
+    "label": "SAFE",
+    "explanation": "This clause provides a clear dispute resolution mechanism, ensuring a fair and efficient process.",
+    "severity": "LOW"
+  },
+  {
+    "text": "The Company shall process and store all personal data in accordance with this Privacy Policy and applicable data protection laws. The Company shall ensure that all employees, contractors, and third-party providers handling personal data are trained on data protection best practices and confidentiality obligations.",
+    "label": "SAFE",
+    "explanation": "This clause ensures compliance with data protection laws and educates employees on data handling best practices.",
+    "severity": "LOW"
+  },
+  {
+    "text": "The Company shall implement industry-standard security measures to protect against unauthorized access, disclosure, or theft of personal data. This includes multi-factor authentication, encryption, and regular security audits.",
+    "label": "SAFE",
+    "explanation": "This clause adheres to robust data security standards, protecting personal data from unauthorized access.",
+    "severity": "LOW"
+  },
+  {
+    "text": "In the event of a personal data breach, the Company shall notify affected individuals and regulatory authorities within 72 hours, as required by law. The Company shall provide a detailed report on the breach, including the type of data compromised and measures taken to prevent similar breaches.",
+    "label": "SAFE",
+    "explanation": "This clause ensures timely notification of data breaches, meeting compliance obligations.",
+    "severity": "LOW"
+  },
+  {
+    "text": "The Company shall only transfer personal data to third-party partners with prior consent from data subjects, except where permitted by law. Third-party partners shall be required to adhere to the same data protection standards as the Company.",
+    "label": "SAFE",
+    "explanation": "This clause respects data subject consent for data sharing and ensures third-party partners meet data protection standards.",
+    "severity": "LOW"
+  },
+  {
+    "text": "The Company shall maintain accurate and up-to-date records of personal data processing activities, including categories of data collected, purposes for which data is processed, and duration of data storage. Records shall be made available to data subjects upon request.",
+    "label": "SAFE",
+    "explanation": "This clause ensures transparency and accountability through accurate record-keeping, meeting data protection requirements.",
+    "severity": "LOW"
+  },
+  {
+    "text": "The payment terms shall be as follows: payment is due within 30 days of invoice date. All payments shall be made in US dollars. The Company reserves the right to charge a late fee of 5% on any outstanding balance.",
+    "label": "SAFE",
+    "explanation": "This clause clearly outlines payment due dates, currency, and potential late fees, following standard best practices for financial transactions.",
+    "severity": "LOW"
+  },
+  {
+    "text": "All financial transactions shall be conducted through a secure and approved payment gateway. The Company shall maintain accurate and up-to-date financial records, including invoices and payment receipts.",
+    "label": "SAFE",
+    "explanation": "This clause ensures secure financial transactions and proper record keeping, aligning with financial regulations and industry standards.",
+    "severity": "LOW"
+  },
+  {
+    "text": "In the event of non-payment, the Company shall send a written notice to the customer, specifying the outstanding balance and due date for payment. The Company reserves the right to withhold services until payment is received.",
+    "label": "SAFE",
+    "explanation": "This clause outlines a clear process for handling non-payment, including written notice and potential service withholding.",
+    "severity": "LOW"
+  },
+  {
+    "text": "All payments shall be made directly to the Company's designated bank account. The Company shall provide written confirmation of receipt for all payments.",
+    "label": "SAFE",
+    "explanation": "This clause specifies a clear payment method and ensures proper receipt confirmation, following best practices for financial transactions.",
+    "severity": "LOW"
+  },
+  {
+    "text": "Any changes to the payment terms shall be made in writing and signed by both parties. The Company shall maintain a record of all payment terms and agreements.",
+    "label": "SAFE",
+    "explanation": "This clause ensures that any changes to payment terms are documented and agreed upon in writing, following standard best practices for contract management.",
+    "severity": "LOW"
+  },
+  {
+    "text": "Company shall maintain customer data for a period of 3 years from the date of last purchase. Data may be transferred to third-party vendors for processing.",
+    "label": "NEEDS_REVIEW",
+    "explanation": "Ambiguous language regarding data transfer and processing. Specific vendor contracts and data protection measures should be documented.",
+    "severity": "MEDIUM"
+  },
+  {
+    "text": "Upon termination of this agreement, the Company shall return all customer data to the customer. However, data may be retained for up to 6 months for compliance purposes.",
+    "label": "NEEDS_REVIEW",
+    "explanation": "Inconsistent data retention periods and purposes. Clarification on compliance purposes and data storage is needed.",
+    "severity": "MEDIUM"
+  },
+  {
+    "text": "Company shall use commercially reasonable efforts to protect customer data from unauthorized access. Data shall be encrypted during transmission and storage.",
+    "label": "NEEDS_REVIEW",
+    "explanation": "Vague language regarding 'commercially reasonable efforts' for data protection. Specific security measures and protocols should be outlined.",
+    "severity": "MEDIUM"
+  },
+  {
+    "text": "Customer data may be shared with third-party service providers for the purpose of marketing and advertising. Customer consent is not required for such data sharing.",
+    "label": "NEEDS_REVIEW",
+    "explanation": "Potential GDPR violation for sharing customer data without consent. Clarification on customer opt-out options and data protection is needed.",
+    "severity": "MEDIUM"
+  },
+  {
+    "text": "Company shall provide a data protection officer (DPO) who will be responsible for ensuring compliance with relevant data protection laws. However, the DPO's role and responsibilities are not explicitly outlined.",
+    "label": "NEEDS_REVIEW",
+    "explanation": "Inadequate definition of the DPO's role and responsibilities. Specific duties, authority, and reporting lines should be documented.",
+    "severity": "MEDIUM"
+  },
+  {
+    "text": "All payments shall be made within 30 days of invoice receipt. However, in case of disputes, payment may be delayed.",
+    "label": "NEEDS_REVIEW",
+    "explanation": "Ambiguous clause regarding payment deadlines and disputes, potentially violating standard payment terms.",
+    "severity": "MEDIUM"
+  },
+  {
+    "text": "The Company may withhold payment to contractors if 'reasonable doubt' exists regarding their work quality. Reasonable doubt shall be determined by the Company's management.",
+    "label": "NEEDS_REVIEW",
+    "explanation": "Subjective definition of 'reasonable doubt' may lead to bias in payment decisions, potentially violating fair business practices.",
+    "severity": "MEDIUM"
+  },
+  {
+    "text": "All financial reports will be submitted to the auditor no later than the end of the fiscal year. However, in case of an audit by regulatory bodies, reports may be submitted on a 'best efforts' basis.",
+    "label": "NEEDS_REVIEW",
+    "explanation": "Clause regarding audit reporting is ambiguous and does not clearly define the auditor's responsibilities or the regulatory bodies' requirements.",
+    "severity": "MEDIUM"
+  },
+  {
+    "text": "The Company shall pay contractors within 30 days of receiving an invoice. However, in case of 'urgent' matters, payment may be expedited at the Company's discretion.",
+    "label": "NEEDS_REVIEW",
+    "explanation": "Clause regarding expedited payment for 'urgent' matters lacks clear definition and potentially discriminates against certain contractors.",
+    "severity": "MEDIUM"
+  },
+  {
+    "text": "All payment terms shall be governed by the laws of the state of New York, without regard to conflict of laws principles. Disputes shall be resolved through arbitration, but arbitration shall be optional for either party.",
+    "label": "NEEDS_REVIEW",
+    "explanation": "Clause lacks clarity regarding the arbitration process and may be perceived as biased against certain parties.",
+    "severity": "MEDIUM"
+  },
+  {
+    "text": "Either party may terminate this agreement with a written notice of 30 days. However, upon termination, the customer shall still be liable for any outstanding invoices.",
+    "label": "NEEDS_REVIEW",
+    "explanation": "Termination notice period is stated, but liability for outstanding invoices may be perceived as unfair to the customer, potentially leading to disputes.",
+    "severity": "MEDIUM"
+  },
+  {
+    "text": "Upon termination or expiration of this agreement, the vendor shall deliver all project materials to the customer, provided that the customer provides written instructions within 14 days.",
+    "label": "NEEDS_REVIEW",
+    "explanation": "Delivery of project materials depends on customer instructions, which may delay the process or create additional requirements.",
+    "severity": "MEDIUM"
+  },
+  {
+    "text": "Either party may terminate this agreement with immediate effect in case of material breach by the other party. Material breach is defined as any failure to meet obligations under this agreement.",
+    "label": "NEEDS_REVIEW",
+    "explanation": "Definition of material breach is vague and may be subject to interpretation, potentially leading to disputes over termination.",
+    "severity": "HIGH"
+  },
+  {
+    "text": "This agreement shall automatically renew for an additional one-year term unless either party provides written notice of non-renewal at least 30 days prior to the end of the current term.",
+    "label": "NEEDS_REVIEW",
+    "explanation": "Automatic renewal may not align with either party's expectations, and notice period could be improved for clarity.",
+    "severity": "MEDIUM"
+  },
+  {
+    "text": "In case of termination, the vendor shall maintain confidentiality of customer data for a period of two years from the date of termination.",
+    "label": "NEEDS_REVIEW",
+    "explanation": "Confidentiality period is specified, but it may not align with regulatory requirements or industry standards, potentially exposing the vendor to risks.",
+    "severity": "MEDIUM"
+  },
+  {
+    "text": "The Company shall indemnify and hold harmless the Customer for any claims arising from the use of the software, except for claims arising from the Customer's gross negligence or willful misconduct.",
+    "label": "NEEDS_REVIEW",
+    "explanation": "Indemnification is offered, but it excludes gross negligence or willful misconduct, which may leave gaps in protection.",
+    "severity": "MEDIUM"
+  },
+  {
+    "text": "In no event shall the Company be liable for any consequential, indirect, special, or punitive damages arising from the use of the software.",
+    "label": "NEEDS_REVIEW",
+    "explanation": "Excluding consequential damages may not be sufficient to mitigate potential losses, and a more comprehensive liability statement is recommended.",
+    "severity": "MEDIUM"
+  },
+  {
+    "text": "The Company shall not be liable for any loss or damage to the Customer's data that occurs after the data is transmitted to the Customer's server.",
+    "label": "NEEDS_REVIEW",
+    "explanation": "This clause might be seen as a limitation of liability rather than a comprehensive indemnification, which may not provide sufficient protection to the Customer.",
+    "severity": "MEDIUM"
+  },
+  {
+    "text": "The Company shall indemnify and hold harmless the Customer against any losses or damages arising from the use of the software, to the extent permitted by law.",
+    "label": "NEEDS_REVIEW",
+    "explanation": "The phrase 'to the extent permitted by law' may create ambiguity and uncertainty in the scope of indemnification, which should be clarified.",
+    "severity": "MEDIUM"
+  },
+  {
+    "text": "The Company shall be liable for any damages arising from the software, but the Customer shall be responsible for ensuring the software is used in compliance with all applicable laws.",
+    "label": "NEEDS_REVIEW",
+    "explanation": "This clause may create confusion regarding the shared responsibilities of liability and compliance, and a clearer allocation of risk is recommended.",
+    "severity": "MEDIUM"
+  },
+  {
+    "text": "The parties agree to maintain confidentiality of all information exchanged during negotiations. However, this obligation is limited to a period of two years from the date of this agreement.",
+    "label": "NEEDS_REVIEW",
+    "explanation": "Confidentiality period is limited, which may not be sufficient for the parties' interests. No specifics on how confidentiality will be enforced.",
+    "severity": "MEDIUM"
+  },
+  {
+    "text": "Confidential information shall be kept confidential and not disclosed to any third party without prior written consent of the disclosing party. This obligation shall survive termination of this agreement.",
+    "label": "NEEDS_REVIEW",
+    "explanation": "Lack of clarity on what constitutes confidential information, may lead to inconsistent application of confidentiality obligations.",
+    "severity": "MEDIUM"
+  },
+  {
+    "text": "The receiving party shall protect confidential information with a reasonable level of care, but shall not be liable for any damages resulting from unauthorized disclosure caused by external factors.",
+    "label": "NEEDS_REVIEW",
+    "explanation": "The concept of 'reasonable level of care' is subjective and open to interpretation, which may lead to disputes over non-compliance.",
+    "severity": "MEDIUM"
+  },
+  {
+    "text": "Confidential information includes, but is not limited to, trade secrets, know-how, and proprietary software. However, confidential information does not include publicly available information.",
+    "label": "NEEDS_REVIEW",
+    "explanation": "Definition of confidential information is partially provided, leaving room for potential disputes or inconsistencies in application.",
+    "severity": "MEDIUM"
+  },
+  {
+    "text": "The parties agree to maintain confidentiality of all information exchanged during negotiations, and this obligation shall be governed by the laws of the state of New York.",
+    "label": "NEEDS_REVIEW",
+    "explanation": "Confidentiality obligation is not clearly linked to any specific jurisdiction, potentially leading to conflicts over applicable law.",
+    "severity": "MEDIUM"
+  },
+  {
+    "text": "In the event of a third-party data transfer, the Company shall inform the user within 30 days after the transfer has taken place.",
+    "label": "NEEDS_REVIEW",
+    "explanation": "This clause is incomplete as it doesn't specify the method of user notification, which could lead to issues.",
+    "severity": "MEDIUM"
+  },
+  {
+    "text": "The Company reserves the right to share customer data with third-party vendors for marketing purposes, subject to obtaining prior consent from the customer.",
+    "label": "NEEDS_REVIEW",
+    "explanation": "The clause does not specify the type of consent required or the method of obtaining it, which could lead to non-compliance.",
+    "severity": "MEDIUM"
+  },
+  {
+    "text": "When sharing data with third-party service providers, the Company shall ensure that such providers have adequate security measures in place to protect customer data.",
+    "label": "NEEDS_REVIEW",
+    "explanation": "This clause is somewhat ambiguous and does not specify the standard of 'adequate security measures', which could be open to interpretation.",
+    "severity": "MEDIUM"
+  },
+  {
+    "text": "To facilitate business growth, the Company may share non-personal data with third-party partners, provided that such data does not identify individual customers.",
+    "label": "NEEDS_REVIEW",
+    "explanation": "The clause does not specify what constitutes 'non-personal data' or the procedures for data sharing, which could lead to issues.",
+    "severity": "MEDIUM"
+  },
+  {
+    "text": "In the event of a data breach, the Company shall notify affected customers and third-party partners of the breach within 72 hours, subject to any applicable laws or regulations.",
+    "label": "NEEDS_REVIEW",
+    "explanation": "This clause could be considered non-compliant if applicable laws or regulations require a shorter breach notification period.",
+    "severity": "MEDIUM"
+  },
+  {
+    "text": "The Company shall ensure the physical security of its premises, including access control and surveillance systems, to prevent unauthorized access to its servers and sensitive information. However, access control procedures may vary by location, and not all locations may have surveillance systems.",
+    "label": "NEEDS_REVIEW",
+    "explanation": "Ambiguous language regarding access control and surveillance procedures, potentially compromising physical security.",
+    "severity": "MEDIUM"
+  },
+  {
+    "text": "All employees with access to sensitive information shall undergo annual security training and sign a confidentiality agreement. However, the exact content of the training and agreement may change over time.",
+    "label": "NEEDS_REVIEW",
+    "explanation": "Vague language regarding security training content and confidentiality agreement, may not adequately protect sensitive information.",
+    "severity": "MEDIUM"
+  },
+  {
+    "text": "The Company shall conduct quarterly security audits to identify vulnerabilities and weaknesses in its systems and processes. However, the audit procedures may not be specified in detail.",
+    "label": "NEEDS_REVIEW",
+    "explanation": "Lack of detail regarding audit procedures, potentially leading to inconsistent or inadequate audit results.",
+    "severity": "MEDIUM"
+  },
+  {
+    "text": "The Company shall implement a disaster recovery plan to ensure business continuity in the event of a disaster. However, the plan may not be thoroughly tested or updated regularly.",
+    "label": "NEEDS_REVIEW",
+    "explanation": "Potential lack of effectiveness in the disaster recovery plan due to inadequate testing and maintenance.",
+    "severity": "MEDIUM"
+  },
+  {
+    "text": "The Company shall encrypt all sensitive information in transit and at rest. However, the specific encryption standards and protocols used may not be clearly defined.",
+    "label": "NEEDS_REVIEW",
+    "explanation": "Unclear encryption standards and protocols, potentially compromising data protection and compliance.",
+    "severity": "MEDIUM"
+  },
+  {
+    "text": "The Customer shall provide the Vendor with reasonable access to its facilities, systems, and personnel upon written notice at least two business days prior to the audit date.",
+    "label": "NEEDS_REVIEW",
+    "explanation": "Lack of specificity on what constitutes reasonable access and insufficient notice period may lead to disputes.",
+    "severity": "MEDIUM"
+  },
+  {
+    "text": "The audit shall be conducted during normal business hours and shall be completed within a reasonable time period as agreed upon by both parties.",
+    "label": "NEEDS_REVIEW",
+    "explanation": "Ambiguous definition of 'reasonable time period' may lead to disputes over audit duration.",
+    "severity": "MEDIUM"
+  },
+  {
+    "text": "The Vendor shall maintain audit trails for all transactions and shall permit the Customer to review these records upon request.",
+    "label": "NEEDS_REVIEW",
+    "explanation": "Lack of clarity on what constitutes 'audit trails' may lead to disputes over record-keeping requirements.",
+    "severity": "MEDIUM"
+  },
+  {
+    "text": "The Customer shall have the right to conduct audits at the Vendor's facilities but shall be responsible for any damage caused during the audit.",
+    "label": "NEEDS_REVIEW",
+    "explanation": "Unclear who bears responsibility for damages, potentially creating disputes.",
+    "severity": "MEDIUM"
+  },
+  {
+    "text": "The audit shall be conducted with reasonable frequency, to be determined by the Vendor, and shall be completed within a period not exceeding 30 days.",
+    "label": "NEEDS_REVIEW",
+    "explanation": "Lack of specificity on what constitutes 'reasonable frequency' may lead to disputes over audit schedule.",
+    "severity": "MEDIUM"
+  },
+  {
+    "text": "The company reserves the right to collect and store user data without prior notice or consent for the purpose of improving its services.",
+    "label": "NEEDS_REVIEW",
+    "explanation": "Lack of explicit consent for data collection; however, 'improving services' is a vague purpose, requiring clarification.",
+    "severity": "MEDIUM"
+  },
+  {
+    "text": "In the event of a data breach, the company shall notify the relevant authorities and users within 72 hours, unless it is deemed unnecessary.",
+    "label": "NEEDS_REVIEW",
+    "explanation": "Ambiguous 'unless it is deemed unnecessary' condition, potentially undermining the effectiveness of the breach notification clause.",
+    "severity": "MEDIUM"
+  },
+  {
+    "text": "Data stored on the company's servers shall be kept confidential, except as required by law or in the course of a merger or acquisition.",
+    "label": "NEEDS_REVIEW",
+    "explanation": "Limited scope of confidentiality, potentially vulnerable to exploitation in a merger or acquisition scenario.",
+    "severity": "LOW"
+  },
+  {
+    "text": "Users have the right to access, correct, and erase their personal data held by the company upon written request.",
+    "label": "NEEDS_REVIEW",
+    "explanation": "Missing provisions for data portability, potential delay in responding to user requests.",
+    "severity": "MEDIUM"
+  },
+  {
+    "text": "The company shall maintain reasonable security measures to protect user data from unauthorized access, including firewall and antivirus software.",
+    "label": "NEEDS_REVIEW",
+    "explanation": "Vague 'reasonable security measures' standard; additional details on technical and organizational measures are necessary.",
+    "severity": "MEDIUM"
+  },
+  {
+    "text": "The Client shall make payments to the Contractor within 30 days of receiving the invoice. Payments not made within 60 days of the due date shall incur a late fee of 2% per annum.",
+    "label": "NEEDS_REVIEW",
+    "explanation": "Late fee calculation is unclear and may be subject to interpretation, potentially leading to disputes.",
+    "severity": "MEDIUM"
+  },
+  {
+    "text": "In the event of a payment dispute, the Contractor reserves the right to withhold services until the dispute is resolved. The Client shall be responsible for all costs incurred during this period.",
+    "label": "NEEDS_REVIEW",
+    "explanation": "Language is ambiguous regarding the Contractor's withholding of services and potential impact on the Client.",
+    "severity": "LOW"
+  },
+  {
+    "text": "The Client shall provide a bank guarantee or letter of credit to secure payment for services rendered. The guarantee/letter of credit shall be in the amount of 10% of the total contract value.",
+    "label": "NEEDS_REVIEW",
+    "explanation": "Specific requirements for bank guarantee/letter of credit are missing, such as expiration date and issuing bank.",
+    "severity": "LOW"
+  },
+  {
+    "text": "Any changes to the payment terms shall be made in writing and signed by both parties. The Contractor reserves the right to modify payment terms unilaterally in the event of non-payment by the Client.",
+    "label": "NEEDS_REVIEW",
+    "explanation": "Language regarding unilateral changes to payment terms is unclear and may be subject to interpretation.",
+    "severity": "MEDIUM"
+  },
+  {
+    "text": "The Client shall pay all applicable taxes and duties associated with the services rendered. The Contractor shall provide the Client with an invoice detailing the services rendered and applicable taxes.",
+    "label": "NEEDS_REVIEW",
+    "explanation": "Language regarding tax and duty obligations is unclear and may not fully comply with relevant tax laws.",
+    "severity": "MEDIUM"
+  }
+]
