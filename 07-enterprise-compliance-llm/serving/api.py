@@ -15,6 +15,7 @@ import tempfile
 import os
 
 from compliance import check_compliance
+from agents.orchestrator import execute_agent
 from ingestion.document_parser import parse_document
 from ingestion.chunker import chunk_text
 from ingestion.embed_and_store import embed_and_store
@@ -147,6 +148,20 @@ async def audit_document(file: UploadFile = File(...)):
     
     finally:
         os.unlink(tmp_path)
+
+
+class AgentRequest(BaseModel):
+    request: str
+    max_steps: int = 10
+
+@app.post("/agent")
+async def agent_endpoint(req: AgentRequest):
+
+    print(f"\n🤖 Agent request: {req.request}")
+    
+    result = execute_agent(req.request, max_steps=req.max_steps)
+    return result
+
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8001)

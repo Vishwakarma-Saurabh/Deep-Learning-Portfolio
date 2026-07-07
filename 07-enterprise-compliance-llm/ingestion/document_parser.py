@@ -9,7 +9,6 @@ from PyPDF2 import PdfReader
 from docx import Document
 
 def parse_document(file_path: str) -> dict:
- 
     path = Path(file_path)
     
     if not path.exists():
@@ -19,10 +18,11 @@ def parse_document(file_path: str) -> dict:
         text = _parse_pdf(path)
     elif path.suffix.lower() == '.docx':
         text = _parse_docx(path)
+    elif path.suffix.lower() == '.txt': 
+        text = _parse_txt(path)
     else:
-        return {"text": "", "filename": path.name, "error": "Unsupported format"}
+        return {"text": "", "filename": path.name, "error": f"Unsupported format: {path.suffix}"}
     
-    # Clean the text
     text = _clean_text(text)
     
     return {
@@ -48,6 +48,12 @@ def _parse_docx(path: Path) -> str:
     """Extract text from DOCX using python-docx."""
     doc = Document(path)
     return "\n\n".join([para.text for para in doc.paragraphs])
+
+
+def _parse_txt(path: Path) -> str:
+    """Extract text from TXT file."""
+    with open(path, 'r', encoding='utf-8') as f:
+        return f.read()
 
 
 def _clean_text(text: str) -> str:
