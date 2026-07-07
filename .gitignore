@@ -55,8 +55,7 @@ qdrant_storage/
 .DS_Store
 Thumbs.db
 
-# Test files
-sample_contract.txt
+
 
 # BUT KEEP THESE (they go to GitHub):
 # !compliance_lora/
@@ -92,6 +91,7 @@ sample_contract.txt
 logs/
 *.log
 *.out
+email_log.json
 
 # Output directories
 output/
