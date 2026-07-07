@@ -81,7 +81,7 @@ def train():
     # 4-bit quantization
     bnb_config = BitsAndBytesConfig(
         load_in_4bit=True,
-        bnb_4bit_compute_dtype=torch.float32,
+        bnb_4bit_compute_dtype=torch.float16,
         bnb_4bit_use_double_quant=True,
         bnb_4bit_quant_type="nf4"
     )
@@ -90,7 +90,7 @@ def train():
     model = AutoModelForCausalLM.from_pretrained(
         MODEL_NAME,
         quantization_config=bnb_config,
-        device_map="cpu",
+        device_map="auto",
         trust_remote_code=True
     )
     
@@ -152,19 +152,17 @@ def train():
     # Training arguments
     training_args = TrainingArguments(
         output_dir=OUTPUT_DIR,
-        num_train_epochs=3,
-        per_device_train_batch_size=1,
-        gradient_accumulation_steps=4,
+        num_train_epochs=5,  # More epochs = better with small data
+        per_device_train_batch_size=4,  # Bigger batch (GPU handles it)
+        gradient_accumulation_steps=2,   # Effective batch = 8
         learning_rate=2e-4,
-        warmup_steps=10,
-        logging_steps=10,
-        save_steps=50,
-        eval_steps=50,
-        eval_strategy="steps",
-        save_total_limit=2,
-        load_best_model_at_end=True,
+        warmup_steps=5,
+        logging_steps=5,
+        save_strategy="epoch",
+        fp16=True,  # 🔥 Mixed precision training (GPU only)
         report_to="none",
-        remove_unused_columns=False
+        remove_unused_columns=False,
+        dataloader_pin_memory=True  # Faster data transfer to GPU
     )
     
     # Trainer
