@@ -134,3 +134,73 @@ htmlcov/
 *.db
 *.sqlite
 *.sqlite3
+
+
+---
+
+## 📋 `.gitignore` File
+
+```gitignore
+# Python
+__pycache__/
+*.py[cod]
+*.so
+*.egg-info/
+dist/
+build/
+.venv/
+env/
+venv/
+
+# Environment (SECRETS - NEVER COMMIT)
+.env
+*.env.local
+*.env.production
+
+# Qdrant storage (large binary data)
+qdrant_storage/
+
+# Audit logs (runtime data, not code)
+audit_logs/
+email_log.json
+
+# Models (large files - use Git LFS or exclude)
+*.bin
+*.pth
+*.gguf
+*.safetensors
+!compliance_lora/adapter_model.safetensors  # Our small LoRA is OK
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb
+
+# Docker
+docker-compose.override.yml
+
+# Streamlit
+.streamlit/
+
+# Test artifacts
+data/
+test_contract*.pdf
+tmp*
+
+# Monitoring database
+*.db
+*.sqlite
+
+# Python type checking
+.mypy_cache/
+.pyre/
