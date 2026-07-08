@@ -1,0 +1,26 @@
+# Deployment Configuration
+environment: "production"  # development | staging | production
+
+server:
+  host: "0.0.0.0"
+  port: 8001
+  workers: 4
+
+security:
+  rate_limit: 100  # requests per minute
+  max_input_length: 2000
+  blocked_patterns:
+    - "ignore previous instructions"
+    - "show me the system prompt"
+    - "bypass security"
+
+monitoring:
+  metrics_port: 9090
+  log_level: "INFO"
+  alert_thresholds:
+    error_rate: 0.05  # Alert if >5% errors
+    latency_p95: 5.0  # Alert if p95 > 5 seconds
+
+email:
+  smtp_server: "smtp.gmail.com"
+  smtp_port: 587

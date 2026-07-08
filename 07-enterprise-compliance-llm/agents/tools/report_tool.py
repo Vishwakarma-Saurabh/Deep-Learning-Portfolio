@@ -4,6 +4,7 @@ Uses Groq LLM to create well-formatted reports.
 """
 
 import os
+import json
 from groq import Groq
 from dotenv import load_dotenv
 
@@ -12,59 +13,54 @@ client = Groq(api_key=os.getenv("LLM_API_KEY"))
 
 
 def generate_report(findings: dict, report_type: str = "summary") -> dict:
-
+    """
+    Generate a professional report from audit findings.
+    Handles any input format gracefully.
+    """
     print(f"📊 Agent generating {report_type} report...")
     
-    # Build prompt based on report type
+    # Extract useful info regardless of format
+    violations_found = findings.get("violations_found", findings.get("total_clauses", "N/A"))
+    high_risk = findings.get("high_risk_count", "N/A")
+    
+    # Build simple summary for prompt
+    findings_str = json.dumps(findings, indent=2) if isinstance(findings, dict) else str(findings)
+    
     if report_type == "executive":
-        prompt = f"""Create an executive summary for leadership. Be concise and focus on business impact.
+        prompt = f"""Create a 3-sentence executive summary of these compliance findings:
 
-Audit Findings:
-- Total clauses reviewed: {findings.get('total_clauses', 'N/A')}
-- Violations found: {findings.get('violations_found', 'N/A')}
-- High risk issues: {findings.get('high_risk_count', 'N/A')}
+{findings_str}
 
-Details:
-{findings.get('violations', [])}
-
-Format as:
-1. Overall Risk Assessment (1-2 sentences)
-2. Critical Issues (bullet points)
-3. Recommended Actions (numbered list)"""
+Format:
+1. Overall status
+2. Critical issues
+3. Recommended action"""
     
     elif report_type == "detailed":
-        prompt = f"""Create a detailed compliance report for the legal team.
+        prompt = f"""Create a detailed compliance report:
 
-Findings: {findings}
+{findings_str}
 
-Include:
-1. Executive Summary
-2. Methodology
-3. Detailed Findings (each violation with clause reference)
-4. Risk Matrix
-5. Remediation Recommendations
-6. Timeline for Fixes"""
+Include sections:
+- Executive Summary
+- Findings Detail
+- Risk Assessment
+- Recommendations"""
     
-    else: 
-        prompt = f"""Create a brief summary of these audit findings.
+    else:  # summary
+        prompt = f"""Summarize these audit findings in 2-3 bullet points:
 
-Findings: {findings}
-
-Format as:
-- Total issues found
-- Risk level breakdown
-- Top 3 most critical issues
-- Next steps"""
+{findings_str}"""
     
     try:
         response = client.chat.completions.create(
             model="llama-3.1-8b-instant",
             messages=[
-                {"role": "system", "content": "You are a legal compliance reporter. Create professional, clear reports."},
+                {"role": "system", "content": "You are a compliance reporter. Be concise and factual."},
                 {"role": "user", "content": prompt}
             ],
             temperature=0.3,
-            max_tokens=1000
+            max_tokens=500
         )
         
         report = response.choices[0].message.content
@@ -79,9 +75,9 @@ Format as:
     except Exception as e:
         return {
             "success": False,
-            "message": f"Report generation failed: {str(e)}"
+            "message": f"Report generation failed: {str(e)}",
+            "report": f"Error generating report: {str(e)}"
         }
-
 
 # Tool description for the LLM
 TOOL_DESCRIPTION = """

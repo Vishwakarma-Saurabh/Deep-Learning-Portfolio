@@ -1,0 +1,84 @@
+[
+  {
+    "id": "tc_001",
+    "question": "What is the liability cap?",
+    "expected_answer": "$500,000",
+    "must_contain": ["liability", "$500,000"],
+    "must_not_contain": ["I don't know", "not mentioned"],
+    "min_tokens": 10,
+    "max_tokens": 200
+  },
+  {
+    "id": "tc_002",
+    "question": "How can this contract be terminated?",
+    "expected_answer": "30 days written notice",
+    "must_contain": ["terminate", "notice"],
+    "must_not_contain": ["I don't know"],
+    "min_tokens": 10,
+    "max_tokens": 200
+  },
+  {
+    "id": "tc_003",
+    "question": "Is data shared with third parties?",
+    "must_contain": ["data"],
+    "must_not_contain": [],
+    "min_tokens": 5,
+    "max_tokens": 300
+  },
+  {
+    "id": "tc_004",
+    "question": "What are the GDPR requirements?",
+    "must_contain": ["GDPR", "data"],
+    "must_not_contain": ["I don't know", "not sure"],
+    "min_tokens": 15,
+    "max_tokens": 300
+  },
+  {
+    "id": "tc_005",
+    "question": "Are there any compliance violations?",
+    "must_contain": ["violation"],
+    "must_not_contain": [],
+    "min_tokens": 10,
+    "max_tokens": 300
+  },
+  {
+    "id": "tc_006",
+    "question": "What payment terms are specified?",
+    "must_contain": ["payment", "30"],
+    "must_not_contain": ["I don't know"],
+    "min_tokens": 10,
+    "max_tokens": 200
+  },
+  {
+    "id": "tc_007",
+    "question": "Is there a data breach notification requirement?",
+    "must_contain": ["breach", "notification"],
+    "must_not_contain": [],
+    "min_tokens": 10,
+    "max_tokens": 250
+  },
+  {
+    "id": "tc_008",
+    "question": "How is user data encrypted?",
+    "must_contain": ["encrypt", "AES"],
+    "must_not_contain": ["I don't know"],
+    "min_tokens": 10,
+    "max_tokens": 200
+  },
+  {
+    "id": "tc_009",
+    "question": "What are the audit requirements?",
+    "must_contain": ["audit"],
+    "must_not_contain": [],
+    "min_tokens": 10,
+    "max_tokens": 250
+  },
+  {
+    "id": "tc_010",
+    "question": "Are financial controls mandatory?",
+    "must_contain": ["financial", "control"],
+    "must_not_contain": ["I don't know"],
+    "min_tokens": 10,
+    "max_tokens": 200
+  }
+]

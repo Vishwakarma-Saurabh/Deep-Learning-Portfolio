@@ -1,0 +1,77 @@
+version: '3.8'
+
+services:
+  # API Server
+  api:
+    build:
+      context: ..
+      dockerfile: deployment/Dockerfile.api
+    ports:
+      - "8001:8001"
+    environment:
+      - QDRANT_HOST=qdrant
+      - QDRANT_PORT=6333
+      - VLLM_HOST=vllm
+      - VLLM_PORT=8000
+    depends_on:
+      - qdrant
+      - vllm
+    restart: unless-stopped
+    volumes:
+      - ../audit_logs:/app/audit_logs
+      - ../email_log.json:/app/email_log.json
+
+  # vLLM Server
+  vllm:
+    build:
+      context: ..
+      dockerfile: deployment/Dockerfile.vllm
+    ports:
+      - "8000:8000"
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    restart: unless-stopped
+
+  # Qdrant Vector Database
+  qdrant:
+    image: qdrant/qdrant:latest
+    ports:
+      - "6333:6333"
+      - "6334:6334"
+    volumes:
+      - qdrant_data:/qdrant/storage
+    restart: unless-stopped
+
+  # PostgreSQL for monitoring
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: llmops
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: changeme
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  # Grafana Dashboard
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    volumes:
+      - grafana_data:/var/lib/grafana
+    restart: unless-stopped
+
+volumes:
+  qdrant_data:
+  postgres_data:
+  grafana_data:

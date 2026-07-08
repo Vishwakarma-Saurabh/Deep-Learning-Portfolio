@@ -192,19 +192,24 @@ def _execute_tool(action: str, action_input: str):
     
     elif action == "generate_report":
         if isinstance(params, dict):
-            findings = params.get("findings", params) 
-            report_type = params.get("report_type", "summary")
-            return generate_report(findings, report_type)
+            if "findings" in params:
+                findings = params["findings"]
+                report_type = params.get("report_type", "summary")
+                return generate_report(findings, report_type)
+            else:
+                return generate_report(params, "summary")
         elif isinstance(params, str):
             try:
                 parsed = json.loads(params)
-                return generate_report(
-                    parsed.get("findings", parsed),
-                    parsed.get("report_type", "summary")
-                )
+                findings = parsed.get("findings", parsed)
+                report_type = parsed.get("report_type", "summary")
+                return generate_report(findings, report_type)
             except:
-                return generate_report({"input": params}, "summary")
-        return {"success": False, "message": "Invalid parameters for generate_report"}  
+                return generate_report({"raw_input": params}, "summary")
+        elif isinstance(params, list):
+            return generate_report({"items": params}, "summary")
+        else:
+            return {"success": False, "message": f"Cannot parse generate_report input: {type(params)}"}
       
     elif action == "send_email":
         if isinstance(params, dict):

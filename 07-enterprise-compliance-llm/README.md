@@ -165,7 +165,7 @@ Email	SMTP (Gmail/Outlook)	Report delivery
 
 🎓 Concepts Demonstrated
 
-Milestone 1: RAG Pipeline
+# Milestone 1: RAG Pipeline
 Document parsing (PDF, DOCX, TXT)
 
 Semantic chunking with overlap strategy
@@ -177,7 +177,7 @@ Prompt engineering for grounded answers
 Context window management
 
 
-Milestone 2: Fine-Tuned Classifier
+# Milestone 2: Fine-Tuned Classifier
 QLoRA fine-tuning (4-bit quantization)
 
 LoRA adapters (only 0.07% parameters trained)
@@ -189,7 +189,7 @@ Multi-class compliance classification (GDPR, SOX, SAFE, NEEDS_REVIEW)
 Severity scoring (HIGH, MEDIUM, LOW)
 
 
-Milestone 3: LLM Agents
+# Milestone 3: LLM Agents
 ReAct pattern (Reasoning + Acting)
 
 Tool definition and function calling
@@ -201,6 +201,34 @@ State management across steps
 Error handling and recovery
 
 Real email integration via SMTP
+
+
+# Milestone 4: Production Deployment, Security & LLMOps
+
+Transform the development prototype into a production-ready system with monitoring, security, and observability.
+
+---
+
+## 🎯 What You Built
+
+A production-grade LLM operations layer that tracks every request, detects security threats, and visualizes system health in real-time.
+
+---
+
+## 🧠 Concepts Learned 
+
+### 1. Singleton Pattern
+**What:** Ensures only ONE instance of a class exists across the entire application.
+
+**Example:**
+# Without Singleton (Milestone 1-3):
+monitor1 = LLMMonitor()  # Terminal 1: has data
+monitor2 = LLMMonitor()  # Terminal 2: empty - DIFFERENT object
+
+# With Singleton (Milestone 4):
+monitor1 = LLMMonitor()  # Returns the SAME object
+monitor2 = LLMMonitor()  # Returns the SAME object
+*Both see the same data!
 
 
 ## .env Example
@@ -225,53 +253,37 @@ SMTP_EMAIL=your_email@gmail.com
 SMTP_PASSWORD=your_app_password
 
 
-🧪 Testing
-Each component can be tested independently:
+📁 Files Created This Milestone
+File	Purpose	Key Concept
+security/input_guard.py	Detect prompt injection	Security patterns
+security/output_filter.py	Redact PII from responses	Regex matching
+security/audit_logger.py	Record all requests/responses	Audit trail
+llmops/monitor.py	Track performance metrics	Singleton pattern
+llmops/eval_harness.py	Automated accuracy testing	Test automation
+llmops/test_cases.json	10 test cases with criteria	Regression testing
+llmops/prompts/v1.yaml	Version-controlled prompts	Configuration management
+llmops/dashboard/app.py	Real-time monitoring UI	Streamlit
+deployment/Dockerfile.api	Container recipe for API	Containerization
+deployment/Dockerfile.vllm	Container recipe for vLLM	Containerization
+deployment/docker-compose.prod.yml	Production stack	Orchestration
+deployment/nginx.conf	Reverse proxy config	Rate limiting
+configs/model_config.yaml	Model settings	Centralized config
+configs/deployment_config.yaml	Server settings	Centralized config
+.github/workflows/deploy.yml	CI/CD pipeline	Automation
+tests/test_eval_harness.py	Test the test system	Meta-testing
 
-# Test document parsing
-python ingestion/document_parser.py
+🎓 Key Takeaways
+Monitoring is not optional - You can't improve what you don't measure
 
-# Test chunking
-python ingestion/chunker.py
+Security must be layered - Input checks + output filters + audit logs
 
-# Test embeddings and storage
-python ingestion/embed_and_store.py
+Percentiles matter more than averages - P95 tells you about user pain
 
-# Test RAG retrieval
-python rag/retriever.py
+Separate processes need shared storage - RAM isolation is why your dashboard was empty
 
-# Test compliance checker
-python compliance.py
+YAML for config, .env for secrets - Never commit API keys
 
-# Test individual agent tools
-python agents/tools/search_tool.py
-python agents/tools/audit_tool.py
-python agents/tools/report_tool.py
-python agents/tools/email_tool.py
-
-# Test agent orchestrator
-python agents/orchestrator.py
-
-# End-to-end tests
-python tests/test_rag.py
-python tests/test_audit.py
-python tests/test_agent.py
-
-
-📈 Future Enhancements
-Web UI with Streamlit/Chainlit
-
-Batch document processing
-
-HIPAA and PCI-DSS compliance frameworks
-
-LangChain/LlamaIndex integration
-
-Conversation memory and multi-turn agents
-
-Docker containerization of full stack
-
-CI/CD pipeline with GitHub Actions
+Automated evals catch regressions - 10 test cases run in seconds, manual testing takes hours
 
 📜 License
 MIT
