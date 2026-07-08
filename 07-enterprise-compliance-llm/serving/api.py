@@ -17,9 +17,28 @@ from compliance import check_compliance
 from agents.orchestrator import execute_agent
 from llmops.monitor import monitor
 from datetime import datetime
+from caching.semantic_cache import semantic_cache
+from retrieval.hybrid_search import hybrid_search, index_document_for_hybrid
+from memory.conversation_store import conversation_store
+from resilience.rate_limiter import rate_limiter
+from resilience.fallback_chain import fallback_chain
+from streaming.stream_handler import StreamHandler, stream_handler
+from fastapi.responses import StreamingResponse
+from rag.prompts import RAG_SYSTEM_PROMPT, get_rag_prompt
+from resilience.circuit_breaker import groq_breaker, qdrant_breaker
 
 app = FastAPI(title="Enterprise Document Intelligence")
 
+
+def check_rate_limit(user_id: str = "default"):
+    """Check rate limit before processing request."""
+    if not rate_limiter.is_allowed(user_id):
+        retry_after = rate_limiter.get_retry_after(user_id)
+        raise HTTPException(
+            status_code=429,
+            detail=f"Rate limit exceeded. Try again in {retry_after:.0f} seconds."
+        )
+    
 
 class QueryRequest(BaseModel):
     question: str
@@ -38,6 +57,7 @@ async def health():
 
 @app.post("/ingest")
 async def ingest_document(file: UploadFile = File(...)):
+    check_rate_limit("default")
     start = time.time()
     with tempfile.NamedTemporaryFile(delete=False, suffix=file.filename) as tmp:
         tmp.write(await file.read())
@@ -48,15 +68,18 @@ async def ingest_document(file: UploadFile = File(...)):
             raise HTTPException(status_code=400, detail=parsed["error"])
         chunks = chunk_text(parsed["text"])
         result = embed_and_store(chunks, parsed["filename"])
+        
+        index_document_for_hybrid(parsed["filename"], chunks)
+        
         latency = time.time() - start
         monitor.record_request("/ingest", latency, 0, True)
         return {"message": f"Ingested {file.filename}", "chunks_created": len(chunks), "storage": result}
     finally:
         os.unlink(tmp_path)
 
-
 @app.post("/query")
 async def query_document(request: QueryRequest):
+    check_rate_limit("default")
     start = time.time()
     try:
         chunks = retrieve_chunks(request.question, top_k=request.top_k)
@@ -81,6 +104,7 @@ async def query_document(request: QueryRequest):
 
 @app.post("/audit")
 async def audit_document(file: UploadFile = File(...)):
+    check_rate_limit("default")
     start = time.time()
     with tempfile.NamedTemporaryFile(delete=False, suffix=file.filename) as tmp:
         tmp.write(await file.read())
@@ -106,6 +130,7 @@ async def audit_document(file: UploadFile = File(...)):
 
 @app.post("/agent")
 async def agent_endpoint(req: AgentRequest):
+    check_rate_limit("default")
     start = time.time()
     try:
         result = execute_agent(req.request, max_steps=req.max_steps)
@@ -120,9 +145,160 @@ async def agent_endpoint(req: AgentRequest):
 
 @app.get("/metrics")
 async def get_metrics():
+    check_rate_limit("default")
     stats = monitor.get_stats()
     alerts = monitor.should_alert()
     return {"stats": stats, "alerts": alerts, "timestamp": datetime.now().isoformat()}
+
+
+@app.post("/query/hybrid")
+async def hybrid_query(request: QueryRequest):
+    check_rate_limit("default")
+    """Query using hybrid search (dense + sparse)."""
+    start = time.time()
+    
+    try:
+        results = hybrid_search(request.question, top_k=request.top_k)
+        
+        if not results:
+            return {"answer": "No results found.", "results": []}
+        
+        # Format context from hybrid results
+        context = "\n\n".join([
+            f"[{r.get('filename', 'doc')}] {r.get('text', '')}"
+            for r in results
+        ])
+        
+        user_prompt = get_rag_prompt(context, request.question)
+        result = fallback_chain.generate(RAG_SYSTEM_PROMPT, user_prompt, request.question)
+        
+        monitor.record_request("/query/hybrid", time.time() - start, result.get("tokens", 0), True)
+        
+        return {
+            "answer": result["answer"],
+            "provider": result.get("provider", "unknown"),
+            "results": [{"text": r.get("text", "")[:100], "score": r.get("final_score", r.get("score", 0)), "type": r.get("source_type", "unknown")} for r in results[:3]]
+        }
+    
+    except Exception as e:
+        monitor.record_request("/query/hybrid", time.time() - start, 0, False)
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/query/cached")
+async def cached_query(request: QueryRequest):
+    check_rate_limit("default")
+    """Query with semantic caching."""
+    start = time.time()
+    
+    # Check cache first
+    cached = semantic_cache.get(request.question)
+    if cached:
+        monitor.record_request("/query/cached", time.time() - start, 0, True)
+        return {
+            "answer": cached["answer"],
+            "from_cache": True,
+            "similar_to": cached.get("cached_question", ""),
+            "cache_hit": True
+        }
+    
+    # Cache miss - do normal query
+    chunks = retrieve_chunks(request.question, top_k=request.top_k)
+    
+    if not chunks:
+        return {"answer": "No documents found.", "cache_hit": False}
+    
+    context = format_context(chunks)
+    user_prompt = get_rag_prompt(context, request.question)
+    result = fallback_chain.generate(RAG_SYSTEM_PROMPT, user_prompt, request.question)
+    
+    # Store in cache
+    semantic_cache.set(request.question, result["answer"])
+    
+    monitor.record_request("/query/cached", time.time() - start, result.get("tokens", 0), True)
+    
+    return {
+        "answer": result["answer"],
+        "from_cache": False,
+        "cache_hit": False,
+        "provider": result.get("provider", "unknown")
+    }
+
+
+@app.post("/query/stream")
+async def stream_query(request: QueryRequest):
+    check_rate_limit("default")
+    """Query with streaming response."""
+    
+    chunks = retrieve_chunks(request.question, top_k=request.top_k)
+    context = format_context(chunks) if chunks else ""
+    
+    user_prompt = get_rag_prompt(context, request.question)
+    
+    return StreamingResponse(
+        stream_handler.stream_response(RAG_SYSTEM_PROMPT, user_prompt),
+        media_type="text/event-stream"
+    )
+
+
+@app.post("/query/chat")
+async def chat_query(request: QueryRequest, session_id: str = "default"):
+    check_rate_limit("default")
+    """Query with conversation memory."""
+    start = time.time()
+    
+    # Get conversation context
+    conv_context = conversation_store.get_context(session_id)
+    
+    # Get document context
+    chunks = retrieve_chunks(request.question, top_k=request.top_k)
+    doc_context = format_context(chunks) if chunks else ""
+    
+    # Combine contexts
+    full_context = f"{conv_context}\n\nDocument context:\n{doc_context}" if conv_context else doc_context
+    
+    user_prompt = get_rag_prompt(full_context, request.question)
+    result = fallback_chain.generate(RAG_SYSTEM_PROMPT, user_prompt, request.question)
+    
+    # Store in conversation memory
+    conversation_store.add_exchange(session_id, request.question, result["answer"])
+    
+    monitor.record_request("/query/chat", time.time() - start, result.get("tokens", 0), True)
+    
+    return {
+        "answer": result["answer"],
+        "session_id": session_id,
+        "exchanges": len(conversation_store.conversations.get(session_id, [])),
+        "provider": result.get("provider", "unknown")
+    }
+
+
+@app.get("/cache/stats")
+async def cache_stats():
+    check_rate_limit("default")
+    """Get semantic cache statistics."""
+    return semantic_cache.get_stats()
+
+
+@app.get("/circuit/status")
+async def circuit_status():
+    check_rate_limit("default")
+    """Get circuit breaker status."""
+    return {
+        "groq": groq_breaker.get_state(),
+        "qdrant": qdrant_breaker.get_state()
+    }
+
+
+@app.get("/rate/status")
+async def rate_status(user_id: str = "default"):
+    check_rate_limit("default")
+    """Get rate limit status for a user."""
+    return {
+        "user_id": user_id,
+        "remaining": rate_limiter.get_remaining(user_id),
+        "retry_after_seconds": rate_limiter.get_retry_after(user_id)
+    }
 
 
 if __name__ == "__main__":

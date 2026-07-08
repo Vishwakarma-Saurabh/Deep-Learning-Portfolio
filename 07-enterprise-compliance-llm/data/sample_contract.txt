@@ -2,40 +2,42 @@ VENDOR SERVICES AGREEMENT
 
 This Agreement is entered into between Acme Corp ("Company") and Vendor Inc ("Vendor").
 
-1. DATA PROCESSING AND PRIVACY
+SECTION 1: LIABILITY AND INDEMNIFICATION
 
-1.1 Data Collection: Company shall collect user personal data including names, email addresses, and browsing history for the purpose of improving services.
+1.1 Liability Cap: The total liability of either party arising out of or related to this agreement shall not exceed $500,000 (Five Hundred Thousand Dollars) per incident.
 
-1.2 Data Sharing: Company reserves the right to share collected user data with third-party advertising partners without obtaining prior consent from users. Such data may include personal identifiers and behavioral patterns.
+1.2 Damage Exclusion: Neither party shall be liable for any indirect, consequential, or punitive damages exceeding the liability cap amount of $500,000.
 
-1.3 Data Storage: User passwords and personal information shall be stored in plain text format on Company servers located in multiple jurisdictions without encryption.
+1.3 The liability cap applies to all claims including breach of contract, negligence, and statutory violations.
 
-1.4 Data Breach Notification: In the event of a data breach, Company shall investigate internally. No notification to affected users or regulatory authorities is required under this agreement.
+SECTION 2: DATA PROTECTION AND PRIVACY
 
-2. FINANCIAL REPORTING
+2.1 Data Sharing: Company reserves the right to share collected user data with third-party advertising partners without obtaining prior consent from users.
 
-2.1 Record Keeping: Financial records shall be maintained at the discretion of the Chief Financial Officer. External audits are not required under this agreement.
+2.2 Data Storage: User passwords shall be stored in plain text format on Company servers without encryption.
 
-2.2 Financial Modifications: Management reserves the right to modify quarterly financial reports after submission to regulatory bodies without board approval.
+2.3 Data Breach: No notification to affected users or regulatory authorities is required under this agreement in the event of a data breach.
 
-2.3 Internal Controls: Implementation of internal controls over financial reporting is optional and may be determined by individual department heads.
+SECTION 3: FINANCIAL REPORTING
 
-3. COMPLIANT CLAUSES
+3.1 Financial records shall be maintained at the discretion of the Chief Financial Officer without external audit requirements.
 
-3.1 Payment Terms: Vendor shall submit invoices within 15 days of service completion. Company shall pay all approved invoices within 30 calendar days of receipt.
+3.2 Management reserves the right to modify quarterly financial reports after submission without board approval.
 
-3.2 Data Encryption: All sensitive customer data transmitted over public networks shall be encrypted using AES-256 encryption protocol.
+SECTION 4: COMPLIANT CLAUSES
 
-3.3 Audit Rights: Company shall maintain complete and accurate records of all transactions. Independent external audits shall be conducted annually by a certified public accounting firm.
+4.1 Payment Terms: Vendor shall submit invoices within 15 days. Company shall pay all approved invoices within 30 calendar days of receipt.
 
-3.4 Breach Notification: In accordance with GDPR Article 33, Company shall notify affected users and relevant supervisory authorities within 72 hours of discovering a personal data breach.
+4.2 Data Encryption: All sensitive customer data transmitted over public networks shall be encrypted using AES-256 encryption protocol.
 
-3.5 Termination: Either party may terminate this agreement with 60 days written notice. Upon termination, all confidential materials shall be returned within 30 days.
+4.3 Audit Rights: Independent external audits shall be conducted annually by a certified public accounting firm.
 
-4. AMBIGUOUS CLAUSES (NEED REVIEW)
+4.4 Breach Notification: In accordance with GDPR Article 33, Company shall notify affected users within 72 hours of discovering a data breach.
 
-4.1 Security Measures: Company shall implement reasonable security measures as deemed appropriate by the IT department based on current industry standards.
+4.5 Termination: Either party may terminate this agreement with 60 days written notice. Upon termination, all confidential materials shall be returned within 30 days.
 
-4.2 Regulatory Compliance: Company shall comply with applicable data protection regulations where commercially reasonable to do so.
+SECTION 5: AMBIGUOUS CLAUSES
 
-4.3 Data Retention: Personal data shall be retained for a reasonable period as determined by business needs.
+5.1 Security Measures: Company shall implement reasonable security measures as deemed appropriate by the IT department.
+
+5.2 Regulatory Compliance: Company shall comply with applicable regulations where commercially reasonable to do so.
