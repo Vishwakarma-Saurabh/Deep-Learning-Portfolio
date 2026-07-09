@@ -204,3 +204,81 @@ tmp*
 # Python type checking
 .mypy_cache/
 .pyre/
+
+# Python
+__pycache__/
+*.py[cod]
+*.so
+*.egg-info/
+dist/
+build/
+.venv/
+env/
+venv/
+*.egg
+
+# Environment (SECRETS)
+.env
+*.env.local
+*.env.production
+.env.*
+
+# Qdrant storage
+qdrant_storage/
+
+# Audit logs (runtime data)
+audit_logs/
+email_log.json
+
+# Models (large files)
+*.bin
+*.pth
+*.gguf
+*.safetensors
+!compliance_lora/adapter_model.safetensors
+!compliance_lora/adapter_config.json
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb
+
+# Streamlit
+.streamlit/secrets.toml
+
+# Test artifacts
+test_contract*.pdf
+tmp*
+*.tmp
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Python type checking
+.mypy_cache/
+.pyre/
+.pytest_cache/
+
+# Docker
+docker-compose.override.yml
+
+# Logs
+*.log
+logs/
+
+# Distribution
+*.whl
+*.tar.gz
