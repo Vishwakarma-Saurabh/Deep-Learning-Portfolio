@@ -14,7 +14,7 @@ from ingestion.chunker import chunk_text
 from ingestion.embed_and_store import embed_and_store
 from rag.retriever import retrieve_chunks, format_context
 from rag.synthesizer import synthesize_answer
-from compliance import check_compliance
+from groq import Groq
 from agents.orchestrator import execute_agent
 from llmops.monitor import monitor
 from datetime import datetime
@@ -54,6 +54,41 @@ def check_rate_limit(user_id: str = "default"):
             detail=f"Rate limit exceeded. Try again in {retry_after:.0f} seconds."
         )
     
+
+def check_compliance_cloud(clause_text: str) -> dict:
+    """Use Groq for compliance checking (no local model needed)."""
+    client = Groq(api_key=os.getenv("LLM_API_KEY"))
+    
+    response = client.chat.completions.create(
+        model="llama-3.1-8b-instant",
+        messages=[{
+            "role": "system",
+            "content": "Classify contract clauses as GDPR_Violation, SOX_Violation, SAFE, or NEEDS_REVIEW. Return JSON: {\"violation\":\"...\", \"severity\":\"HIGH/MEDIUM/LOW\", \"explanation\":\"...\"}"
+        }, {
+            "role": "user",
+            "content": f"Classify: {clause_text}"
+        }],
+        temperature=0.1,
+        max_tokens=200
+    )
+    
+    try:
+        import json
+        result = json.loads(response.choices[0].message.content)
+        return {
+            "violation": result.get("violation", "NEEDS_REVIEW"),
+            "severity": result.get("severity", "MEDIUM"),
+            "explanation": result.get("explanation", ""),
+            "clause_preview": clause_text[:100] + "..."
+        }
+    except:
+        return {
+            "violation": "NEEDS_REVIEW",
+            "severity": "MEDIUM", 
+            "explanation": "Could not classify",
+            "clause_preview": clause_text[:100] + "..."
+        }
+
 
 class QueryRequest(BaseModel):
     question: str
@@ -135,7 +170,7 @@ async def audit_document(file: UploadFile = File(...)):
         for i in range(0, total, batch_size):
             batch = chunks[i:i+batch_size]
             for chunk in batch:
-                result = check_compliance(chunk["text"])
+                result = check_compliance_cloud(chunk["text"])
                 if result["violation"] != "SAFE":
                     violations.append(result)
         
