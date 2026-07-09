@@ -1,0 +1,159 @@
+/* Custom styling for Compliance AI Assistant */
+
+/* Main container */
+.main .block-container {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+
+/* Chat messages */
+.stChatMessage {
+    border-radius: 12px;
+    padding: 10px;
+    margin: 8px 0;
+}
+
+.stChatMessage[data-testid="user-chat-message"] {
+    background-color: #1E3A5F;
+    border-left: 3px solid #3B82F6;
+}
+
+.stChatMessage[data-testid="assistant-chat-message"] {
+    background-color: #1E293B;
+    border-left: 3px solid #10B981;
+}
+
+/* Violation cards */
+.violation-card {
+    border-radius: 8px;
+    padding: 16px;
+    margin: 10px 0;
+    transition: transform 0.2s;
+}
+
+.violation-card:hover {
+    transform: translateX(4px);
+}
+
+.violation-high {
+    border-left: 4px solid #EF4444;
+    background-color: #1E293B;
+}
+
+.violation-medium {
+    border-left: 4px solid #F59E0B;
+    background-color: #1E293B;
+}
+
+.violation-low {
+    border-left: 4px solid #10B981;
+    background-color: #1E293B;
+}
+
+/* Buttons */
+.stButton > button {
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.stButton > button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Metrics */
+.metric-card {
+    background-color: #1E293B;
+    border-radius: 8px;
+    padding: 16px;
+    text-align: center;
+}
+
+.metric-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #3B82F6;
+}
+
+.metric-label {
+    font-size: 0.875rem;
+    color: #94A3B8;
+}
+
+/* Sidebar */
+.sidebar .sidebar-content {
+    background-color: #0F172A;
+}
+
+/* File uploader */
+.uploadedFile {
+    border-radius: 8px;
+    border: 2px dashed #3B82F6;
+    padding: 20px;
+    text-align: center;
+}
+
+/* Status indicators */
+.status-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-right: 8px;
+}
+
+.status-online {
+    background-color: #10B981;
+}
+
+.status-offline {
+    background-color: #EF4444;
+}
+
+/* Progress bar */
+.stProgress > div > div {
+    background-color: #3B82F6;
+}
+
+/* Expander */
+.streamlit-expanderHeader {
+    background-color: #1E293B;
+    border-radius: 8px;
+}
+
+/* Code blocks */
+code {
+    background-color: #1E293B;
+    padding: 2px 6px;
+    border-radius: 4px;
+    color: #10B981;
+}
+
+/* Links */
+a {
+    color: #3B82F6;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #0F172A;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #3B82F6;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #2563EB;
+}

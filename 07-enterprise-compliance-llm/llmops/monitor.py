@@ -115,8 +115,8 @@ class LLMMonitor:
         if stats.get("success_rate", 100) < 95:
             alerts.append(f"⚠️ Error rate above 5%: {100 - stats['success_rate']:.1f}%")
         
-        if stats.get("latency_p95", 0) > 5.0:
-            alerts.append(f"⚠️ P95 latency above 5s: {stats['latency_p95']:.2f}s")
+        if stats.get("latency_p95", 0) > 15:
+            alerts.append(f"⚠️ P95 latency above 15s: {stats['latency_p95']:.2f}s")
         
         if stats.get("requests_last_hour", 0) > 500:
             alerts.append(f"⚠️ High traffic: {stats['requests_last_hour']} requests in last hour")

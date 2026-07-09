@@ -1,6 +1,6 @@
 """
-Compliance checker using fine-tuned LoRA model from Google Colab.
-Detects GDPR and SOX violations in contract clauses.
+Compliance checker using fine-tuned LoRA model.
+Model loads once and stays cached in memory.
 """
 
 import torch
@@ -10,33 +10,35 @@ from peft import PeftModel
 MODEL_NAME = "unsloth/Llama-3.2-1B"
 LORA_PATH = "compliance_lora"
 
+# Load model ONCE at module level (not per request)
 _model = None
 _tokenizer = None
 
-
 def load_model():
-    """Load model once and reuse."""
+    """Load model once - subsequent calls return cached model."""
     global _model, _tokenizer
     
-    if _model is None:
-        print("Loading compliance model...")
-        _tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
-        
-        base_model = AutoModelForCausalLM.from_pretrained(
-            MODEL_NAME,
-            device_map="cpu",
-            torch_dtype=torch.float32
-        )
-        
-        _model = PeftModel.from_pretrained(base_model, LORA_PATH)
-        print("Model loaded!")
+    if _model is not None:
+        return _model, _tokenizer
+    
+    print("Loading compliance model (one-time)...")
+    _tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
+    
+    base_model = AutoModelForCausalLM.from_pretrained(
+        MODEL_NAME,
+        device_map="cpu",
+        torch_dtype=torch.float32
+    )
+    
+    _model = PeftModel.from_pretrained(base_model, LORA_PATH)
+    print("Model loaded and cached!")
     
     return _model, _tokenizer
 
 
 def check_compliance(clause_text: str) -> dict:
     """Check clause for compliance violations."""
-    model, tokenizer = load_model()
+    model, tokenizer = load_model()  # Uses cached model after first call
     
     prompt = (
         f"### Instruction:\n"
@@ -53,14 +55,12 @@ def check_compliance(clause_text: str) -> dict:
     prediction = tokenizer.decode(outputs[0], skip_special_tokens=True)
     prediction = prediction.split("### Response:")[-1].strip()
     
-    # Parse severity
     severity = "LOW"
     if "HIGH" in prediction.upper():
         severity = "HIGH"
     elif "MEDIUM" in prediction.upper():
         severity = "MEDIUM"
     
-    # Parse violation type
     violation = "NEEDS_REVIEW"
     if "GDPR" in prediction.upper():
         violation = "GDPR_Violation"
@@ -75,20 +75,3 @@ def check_compliance(clause_text: str) -> dict:
         "explanation": prediction,
         "clause_preview": clause_text[:100] + "..."
     }
-
-
-if __name__ == "__main__":
-    print("Testing compliance model:\n")
-    
-    tests = [
-        "We share user data with advertisers without consent",
-        "Payment due within 30 days of invoice",
-        "Financial records at management discretion",
-    ]
-    
-    for t in tests:
-        r = check_compliance(t)
-        print(f"Clause: {t}")
-        print(f"Result: {r['violation']} ({r['severity']})")
-        print(f"Detail: {r['explanation'][:80]}...")
-        print("-" * 50)

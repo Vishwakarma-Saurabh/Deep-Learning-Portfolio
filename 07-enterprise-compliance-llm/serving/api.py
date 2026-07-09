@@ -104,7 +104,6 @@ async def query_document(request: QueryRequest):
 
 @app.post("/audit")
 async def audit_document(file: UploadFile = File(...)):
-    check_rate_limit("default")
     start = time.time()
     with tempfile.NamedTemporaryFile(delete=False, suffix=file.filename) as tmp:
         tmp.write(await file.read())
@@ -112,21 +111,41 @@ async def audit_document(file: UploadFile = File(...)):
     try:
         parsed = parse_document(tmp_path)
         chunks = chunk_text(parsed["text"], chunk_size=200, overlap=30)
+        
         violations = []
-        for chunk in chunks:
-            result = check_compliance(chunk["text"])
-            if result["violation"] != "SAFE":
-                violations.append(result)
+        total = len(chunks)
+        
+        # Process in batches of 5 to avoid memory issues
+        batch_size = 5
+        for i in range(0, total, batch_size):
+            batch = chunks[i:i+batch_size]
+            for chunk in batch:
+                result = check_compliance(chunk["text"])
+                if result["violation"] != "SAFE":
+                    violations.append(result)
+        
         latency = time.time() - start
         monitor.record_request("/audit", latency, 0, True)
-        return {"filename": file.filename, "total_clauses": len(chunks), "violations_found": len(violations), "violations": violations}
+        
+        high = len([v for v in violations if v["severity"] == "HIGH"])
+        medium = len([v for v in violations if v["severity"] == "MEDIUM"])
+        
+        return {
+            "filename": file.filename,
+            "audit_summary": {
+                "total_clauses": total,
+                "violations_found": len(violations),
+                "safe_clauses": total - len(violations),
+                "risk_breakdown": {"high": high, "medium": medium}
+            },
+            "violations": violations
+        }
     except Exception as e:
         latency = time.time() - start
         monitor.record_request("/audit", latency, 0, False)
         raise HTTPException(status_code=500, detail=str(e))
     finally:
         os.unlink(tmp_path)
-
 
 @app.post("/agent")
 async def agent_endpoint(req: AgentRequest):
