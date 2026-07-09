@@ -5,6 +5,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from fastapi import FastAPI, File, UploadFile, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import tempfile
 
@@ -29,6 +30,20 @@ from resilience.circuit_breaker import groq_breaker, qdrant_breaker
 
 app = FastAPI(title="Enterprise Document Intelligence")
 
+ALLOWED_ORIGINS = [
+    "https://deep-learning-portfolio-*.streamlit.app",  # Streamlit Cloud URL
+    "http://localhost:8501",  # Local development
+    "http://localhost:3000",  # Future React frontend
+]
+
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=ALLOWED_ORIGINS,
+    allow_credentials=True,
+    allow_methods=["GET", "POST"],
+    allow_headers=["Content-Type", "Authorization"],
+)
 
 def check_rate_limit(user_id: str = "default"):
     """Check rate limit before processing request."""

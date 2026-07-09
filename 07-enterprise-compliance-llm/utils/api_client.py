@@ -19,19 +19,29 @@ def check_health() -> bool:
     except:
         return False
 
+def _make_request(method, endpoint, **kwargs):
+    """Wrapper with error handling."""
+    try:
+        response = method(f"{API_URL}{endpoint}", timeout=30, **kwargs)
+        response.raise_for_status()
+        return response.json()
+    except requests.exceptions.ConnectionError:
+        st.error("Cannot connect to API server. Please try again later.")
+        return {"error": "Connection failed"}
+    except requests.exceptions.Timeout:
+        st.error("Request timed out. The server may be overloaded.")
+        return {"error": "Timeout"}
+    except Exception as e:
+        st.error(f"API error: {str(e)}")
+        return {"error": str(e)}
 
-def ingest_document(file_bytes: bytes, filename: str) -> Dict:
-    """Upload a document to the backend."""
+def ingest_document(file_bytes, filename):
     files = {"file": (filename, file_bytes, "application/pdf")}
-    response = requests.post(f"{API_URL}/ingest", files=files)
-    return response.json()
+    return _make_request(requests.post, "/ingest", files=files)
 
-
-def ask_question(question: str, use_cache: bool = True) -> Dict:
-    """Send a question to the RAG system."""
+def ask_question(question, use_cache=True):
     endpoint = "/query/cached" if use_cache else "/query"
-    response = requests.post(f"{API_URL}{endpoint}", json={"question": question})
-    return response.json()
+    return _make_request(requests.post, endpoint, json={"question": question})
 
 
 def ask_with_hybrid_search(question: str) -> Dict:
