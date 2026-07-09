@@ -7,7 +7,7 @@ import requests
 import streamlit as st
 from typing import Dict, Optional, List
 
-API_URL = "http://localhost:8001"
+API_URL = "deep-learning-portfolio-production.up.railway.app"
 
 
 @st.cache_data(ttl=30)
