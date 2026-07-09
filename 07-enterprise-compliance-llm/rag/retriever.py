@@ -17,8 +17,8 @@ EMBEDDING_MODEL = SentenceTransformer(
 )
 
 QDRANT_CLIENT = QdrantClient(
-    host=os.getenv("QDRANT_URL", "QDRANT_URL"),
-    port=int(os.getenv("QDRANT_API_KEY", "QDRANT_API_KEY"))
+    url=os.getenv("QDRANT_URL", "http://localhost:6333"),
+    api_key=os.getenv("QDRANT_API_KEY", "")
 )
 
 COLLECTION_NAME = os.getenv("QDRANT_COLLECTION", "compliance_docs")
