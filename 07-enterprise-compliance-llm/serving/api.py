@@ -9,6 +9,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import tempfile
 
+import sentry_sdk
 from ingestion.document_parser import parse_document
 from ingestion.chunker import chunk_text
 from ingestion.embed_and_store import embed_and_store
@@ -44,6 +45,14 @@ app.add_middleware(
     allow_methods=["GET", "POST"],
     allow_headers=["Content-Type", "Authorization"],
 )
+
+
+sentry_sdk.init(
+    dsn=os.getenv("SENTRY_DSN", ""),
+    traces_sample_rate=1.0,
+    environment=os.getenv("ENVIRONMENT", "development"),
+)
+
 
 def check_rate_limit(user_id: str = "default"):
     """Check rate limit before processing request."""
