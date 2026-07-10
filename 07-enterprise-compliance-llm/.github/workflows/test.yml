@@ -1,0 +1,42 @@
+name: Test & Validate
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [staging]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      
+      - name: Install dependencies
+        run: |
+          cd 07-enterprise-compliance-llm
+          pip install -r requirements.txt
+      
+      - name: Run evaluation harness
+        env:
+          LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
+        run: |
+          cd 07-enterprise-compliance-llm
+          python llmops/eval_harness.py
+      
+      - name: Check security
+        run: |
+          cd 07-enterprise-compliance-llm
+          python security/input_guard.py
+          python security/output_filter.py
+      
+      - name: Verify imports
+        run: |
+          cd 07-enterprise-compliance-llm
+          python -c "from ingestion.document_parser import parse_document; print('✓ Imports work')"
