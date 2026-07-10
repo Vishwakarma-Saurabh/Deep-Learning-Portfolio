@@ -53,44 +53,51 @@ def render():
         st.divider()
         
         if prompt := st.chat_input("Ask about your documents...", key="chat_input"):
-            # Display user message
-            render_user_message(prompt)
-            add_message("user", prompt)
+            try:
+                # Display user message
+                render_user_message(prompt)
+                add_message("user", prompt)
+                
+                # Get AI response
+                with st.chat_message("assistant", avatar="🤖"):
+                    with st.spinner("Analyzing documents..."):
+                        
+                        if use_hybrid:
+                            result = ask_question(prompt, use_cache=use_cache)
+                        else:
+                            result = chat_with_memory(prompt, get_session_id())
+                        
+                        answer = result.get("answer", "Sorry, I couldn't process that.")
+                        st.markdown(answer)
+                        
+                        # Show metadata
+                        metadata = {
+                            "sources": result.get("sources", []),
+                            "cache_hit": result.get("cache_hit", False),
+                            "provider": result.get("provider", "groq"),
+                            "tokens": result.get("tokens_used", {}).get("total", 0)
+                        }
+                        
+                        # Show sources
+                        if metadata["sources"]:
+                            with st.expander("📌 Sources"):
+                                for src in metadata["sources"]:
+                                    st.caption(f"• {src}")
+                        
+                        # Show cache indicator
+                        if metadata["cache_hit"]:
+                            st.caption("⚡ Instant response from cache (0 tokens used)")
+                        elif metadata["tokens"]:
+                            st.caption(f"🔢 {metadata['tokens']} tokens used")
+                        
+                        # Store in session
+                        add_message("assistant", answer, metadata)
             
-            # Get AI response
-            with st.chat_message("assistant", avatar="🤖"):
-                with st.spinner("Analyzing documents..."):
-                    
-                    if use_hybrid:
-                        result = ask_question(prompt, use_cache=use_cache)
-                    else:
-                        result = chat_with_memory(prompt, get_session_id())
-                    
-                    answer = result.get("answer", "Sorry, I couldn't process that.")
-                    st.markdown(answer)
-                    
-                    # Show metadata
-                    metadata = {
-                        "sources": result.get("sources", []),
-                        "cache_hit": result.get("cache_hit", False),
-                        "provider": result.get("provider", "groq"),
-                        "tokens": result.get("tokens_used", {}).get("total", 0)
-                    }
-                    
-                    # Show sources
-                    if metadata["sources"]:
-                        with st.expander("📌 Sources"):
-                            for src in metadata["sources"]:
-                                st.caption(f"• {src}")
-                    
-                    # Show cache indicator
-                    if metadata["cache_hit"]:
-                        st.caption("⚡ Instant response from cache (0 tokens used)")
-                    elif metadata["tokens"]:
-                        st.caption(f"🔢 {metadata['tokens']} tokens used")
-                    
-                    # Store in session
-                    add_message("assistant", answer, metadata)
+            except Exception as e:
+                st.error(f"❌ Something went wrong: {str(e)[:150]}")
+                st.info("Please try again or contact support if the problem continues.")
+                # Optional: Log to console for debugging
+                print(f"Chat error: {e}")
             
             st.rerun()
 
